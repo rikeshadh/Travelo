@@ -23,7 +23,7 @@ searchForm.addEventListener('submit', function (e) {
   const destination = destinationInput.value.trim();
   const checkin = checkinInput.value;
   const checkout = checkoutInput.value;
-  const guests = parseInt(guestsInput.value, 10);
+  const guests = parseInt(guestsInput.value.replace(/\D/g, ''), 10);
 
   let hasError = false;
 
@@ -57,4 +57,38 @@ searchForm.addEventListener('submit', function (e) {
   });
 
   alert(`Searching for: ${destination}\nFrom ${checkin} to ${checkout}\nFor ${guests} guest(s)`);
+});
+
+
+// Guest dropdown logic (NO DUPLICATE DECLARATIONS HERE)
+const guestDropdown = document.getElementById('guest-dropdown');
+const doneButton = document.getElementById('guest-done');
+
+// Toggle dropdown when clicking guest input
+guestsInput.addEventListener('click', function (e) {
+  guestDropdown.style.display = 'block';
+  e.stopPropagation();
+});
+
+// Hide dropdown when clicking outside
+document.addEventListener('click', function () {
+  guestDropdown.style.display = 'none';
+});
+
+// Prevent closing when clicking inside dropdown
+guestDropdown.addEventListener('click', function (e) {
+  e.stopPropagation();
+});
+
+// Save and close dropdown when "Done" is clicked
+doneButton.addEventListener('click', function () {
+  const adults = document.getElementById('adults-count').value;
+  const children = document.getElementById('children-count').value;
+  const infants = document.getElementById('infants-count').value;
+  const pets = document.getElementById('pets-toggle').checked ? ' with pets' : '';
+
+  const summary = `${adults} Adults, ${children} Children, ${infants} Infants${pets}`;
+  guestsInput.value = summary;
+
+  guestDropdown.style.display = 'none';
 });
