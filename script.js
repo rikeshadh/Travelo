@@ -7,18 +7,23 @@ const checkoutInput = document.getElementById('checkout');
 const guestsInput = document.getElementById('guests');
 const errorMsg = document.getElementById('error-msg');
 
-// Handle search
+// Ensure error message is hidden on initial load
+window.addEventListener('DOMContentLoaded', () => {
+  errorMsg.classList.add('hidden');
+});
+
+// Handle form submission
 searchForm.addEventListener('submit', function (e) {
   e.preventDefault();
 
-  // Reset error visuals
+  // Reset previous errors
   [destinationInput, checkinInput, checkoutInput, guestsInput].forEach(input => input.classList.remove('error'));
   errorMsg.classList.add('hidden');
 
   const destination = destinationInput.value.trim();
   const checkin = checkinInput.value;
   const checkout = checkoutInput.value;
-  const guests = parseInt(guestsInput.value);
+  const guests = parseInt(guestsInput.value, 10);
 
   let hasError = false;
 
@@ -43,7 +48,7 @@ searchForm.addEventListener('submit', function (e) {
     return;
   }
 
-  // If all fields are valid
+  // All valid: simulate search
   console.log('🔍 Search submitted:', {
     Destination: destination,
     CheckIn: checkin,

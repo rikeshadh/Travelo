@@ -11,6 +11,10 @@ body {
     line-height: 1.6;
     color: #333;
     background: #f9f9f9;
+    padding-top: 70px; 
+}
+.hidden {
+    display: none;
 }
 
 /* Container */
@@ -22,10 +26,17 @@ body {
 
 /* Header / Navigation */
 header {
-    background: #fff;
-    padding: 20px 0;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    padding: 5px 0; /* Less padding */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 }
+
 header .container {
+    padding: 0 20px;
+    height: 60px; /* Smaller height */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -35,9 +46,11 @@ header .logo {
     font-weight: 700;
     color: #4facfe;
 }
-.logo img {
-  height: 40px; /* Adjust size as needed */
-  object-fit: contain;
+header .logo img {
+    height: 55px;
+    width: auto;
+    display: block;
+    object-fit: contain;
 }
 header .nav-icons i {
     font-size: 1.2rem;
@@ -46,12 +59,27 @@ header .nav-icons i {
     color: #333;
 }
 
+nav {
+  background: linear-gradient(to right, #4facfe, #00f2fe); /* Match hero */
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
 /* Hero Section */
 #hero {
     background: linear-gradient(to right, #4facfe, #00f2fe);
     color: #fff;
-    padding: 80px 0;
+    padding: 40px 0 60px; /* Shrink vertical space */
     text-align: center;
+    margin-top: 0;
+    padding-top: 80px; /* Match actual compact header */
 }
 #hero h1 {
     font-size: 2.5rem;
@@ -106,23 +134,6 @@ header .nav-icons i {
 }
 #search-btn i {
     font-size: 1rem;
-}
-
-/* Error Message */
-#error-msg {
-  margin-top: 10px;
-  text-align: center;
-  color: red;
-  font-size: 0.95rem;
-}
-.hidden {
-  display: none;
-}
-
-/* Error input styling */
-input.error {
-  border: 2px solid red;
-  background-color: #fff0f0;
 }
 
 
