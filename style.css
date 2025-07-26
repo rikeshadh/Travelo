@@ -1,0 +1,266 @@
+/* style.css */
+
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #f9f9f9;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header / Navigation */
+header {
+    background: #fff;
+    padding: 20px 0;
+}
+header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+header .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4facfe;
+}
+header .nav-icons i {
+    font-size: 1.2rem;
+    margin-left: 20px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Hero Section */
+#hero {
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    color: #fff;
+    padding: 80px 0;
+    text-align: center;
+}
+#hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+#hero p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+/* Search Bar */
+#search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+#search-container .fields {
+    display: flex;
+    background: #fff;
+    border-radius: 50px 0 0 50px;
+    overflow: hidden;
+    flex: 1;
+}
+.search-field {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+}
+.search-field:not(:first-child) {
+    border-left: 1px solid #ddd;
+}
+.search-field i {
+    color: #888;
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+.search-field input {
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+#search-btn {
+    background: #ff5722;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 0 50px 50px 0;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+#search-btn i {
+    font-size: 1rem;
+}
+
+/* Error Message */
+#error-msg {
+  margin-top: 10px;
+  text-align: center;
+  color: red;
+  font-size: 0.95rem;
+}
+.hidden {
+  display: none;
+}
+
+/* Error input styling */
+input.error {
+  border: 2px solid red;
+  background-color: #fff0f0;
+}
+
+
+/* Categories Section */
+#categories {
+    padding: 60px 0;
+    text-align: center;
+}
+#categories h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+.categories-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+.category-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    width: 260px;
+    height: 160px;
+    margin-bottom: 20px;
+}
+.category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.category-label {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 10px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Featured Travel Packages Section */
+#featured {
+    padding: 60px 0;
+    text-align: center;
+    background: #fff;
+}
+#featured h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+#featured p {
+    font-size: 1rem;
+    margin-bottom: 40px;
+    color: #666;
+}
+.package-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+.package-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 300px;
+    text-align: left;
+}
+.package-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.package-info {
+    padding: 20px;
+}
+.package-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+}
+.label.adventure { background: #ff5722; }
+.label.relaxation { background: #5c6bc0; }
+.label.cultural { background: #26a69a; }
+.duration {
+    font-size: 0.9rem;
+    color: #555;
+}
+.package-info h3 {
+    font-size: 1.25rem;
+    margin: 10px 0;
+}
+.package-info p {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    color: #666;
+}
+.price-book {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.price {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+.price small {
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #777;
+}
+.book-btn {
+    background: #ff5722;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.book-btn:hover {
+    background: #e64a19;
+}
+
+/* Footer */
+footer {
+    background: #f1f1f1;
+    padding: 20px 0;
+}
+footer p {
+    text-align: center;
+    color: #777;
+}
+
