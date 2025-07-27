@@ -8,7 +8,6 @@
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #f9f9f9;
-  padding-top: 70px;
 }
 
 /* Hidden utility */
@@ -48,13 +47,14 @@ header {
 
 /* Hero Section */
 #hero {
-  padding: 60px 20px;
+  padding: 100px 20px 60px 20px;
   text-align: center;
   background: linear-gradient(to right, #4facfe, #00f2fe);
   color: white;
 }
 
 .searchBar-container {
+  position: relative;
   display: flex;
   justify-content: center;
   margin-top: 2rem;
@@ -199,4 +199,99 @@ button.minus:hover {
     border-radius: 0 0 16px 16px;
   }
 }
-/* Footer */
+
+#hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+#hero p {
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  color: #fff;
+}
+
+.searchBar-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem;
+  flex: 1;
+  position: relative;
+  border-right: 1px solid #eee;
+  min-width: 180px;
+}
+
+.searchBar-field i {
+  font-size: 1.2rem;
+  color: #0071c2;
+}
+
+.searchBar-field:last-child {
+  border-right: none;
+}
+
+.field-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.field-content label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+}
+
+.field-content input {
+  font-size: 14px;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+}
+
+.search-button {
+  background-color: #ff5a5f;
+  border-radius: 50%;
+  padding: 1rem;
+  height: 52px;
+  width: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: none;
+  margin: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #e04145;
+}
+
+.flatpickr-calendar {
+  font-size: 13px;
+  transform: scale(0.9);
+  transform-origin: top left;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+.flatpickr-calendar.inline {
+  width: auto !important;
+}
+
+#guest-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 80px;  
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  min-width: 250px;
+}

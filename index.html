@@ -29,49 +29,76 @@
   </header>
 
   <section id="hero">
-    <h1>Unlock Your Ultimate Stay</h1>
-    <div class="searchBar-container">
-      <div class="searchBar-box">
-        <!-- Destination -->
-        <div class="searchBar-field">
-          <input type="text" id="destination" placeholder="Where are you going?" />
-        </div>
+  <h1>Unlock Your Ultimate Stay</h1>
+  <p>Dive into deals on stylish hotels, comfortable homes, and beyond.</p>
 
-        <!-- Dates -->
-        <div class="searchBar-field" id="date-trigger">
-          <input type="text" id="date-range" readonly value="Add dates" />
-          <div id="calendar-dropdown" class="dropdown hidden"></div>
+  <div class="searchBar-container">
+    <div class="searchBar-box">
+      
+      <!-- Where -->
+      <div class="searchBar-field">
+        <i class="fas fa-map-marker-alt"></i>
+        <div class="field-content">
+          <label>Where</label>
+          <input type="text" id="destination" placeholder="Search destinations" />
         </div>
-
-        <!-- Guests -->
-        <div class="searchBar-field" id="guests-trigger">
-          <input type="text" id="guests" readonly value="Guests" />
-          <div id="guest-dropdown" class="dropdown hidden">
-            <div class="row">
-              Adults:
-              <button class="minus" data-type="adults">-</button>
-              <span id="adults-count">2</span>
-              <button class="plus" data-type="adults">+</button>
-            </div>
-            <div class="row">
-              Children:
-              <button class="minus" data-type="children">-</button>
-              <span id="children-count">0</span>
-              <button class="plus" data-type="children">+</button>
-            </div>
-            <div class="row">
-              <label><input type="checkbox" id="pets" /> Pets?</label>
-            </div>
-            <button id="done-btn">Done</button>
-          </div>
-        </div>
-
-        <!-- Search Button -->
-        <button class="search-button">Search</button>
       </div>
-    </div>
-  </section>
 
+      <!-- Check in -->
+      <div class="searchBar-field" id="checkin-field">
+        <i class="fas fa-calendar-alt"></i>
+        <div class="field-content">
+          <label>Check in</label>
+          <input type="text" id="checkin" placeholder="Add date" readonly />
+        </div>
+      </div>
+
+      <!-- Check out -->
+      <div class="searchBar-field" id="checkout-field">
+        <i class="fas fa-calendar-alt"></i>
+        <div class="field-content">
+          <label>Check out</label>
+          <input type="text" id="checkout" placeholder="Add date" readonly />
+        </div>
+      </div>
+
+      <!-- Guests -->
+        <div id="guests-trigger" class="searchBar-field">
+  <div class="field-content">
+    <label>Who</label>
+    <input type="text" id="guests" placeholder="Add guests" readonly />
+  </div>
+</div>
+
+<div id="guest-dropdown" class="dropdown hidden">
+  <div class="row">
+    <span>Adults</span>
+    <div>
+      <button class="minus" data-type="adults">-</button>
+      <span id="adults-count">2</span>
+      <button class="plus" data-type="adults">+</button>
+    </div>
+  </div>
+  <div class="row">
+    <span>Children</span>
+    <div>
+      <button class="minus" data-type="children">-</button>
+      <span id="children-count">0</span>
+      <button class="plus" data-type="children">+</button>
+    </div>
+  </div>
+  <div class="row">
+    <label><input type="checkbox" id="pets" /> Bringing pets</label>
+  </div>
+  <button id="done-btn">Done</button>
+</div>
+</div>
+      <!-- Search Button -->
+      <button class="search-button"><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+</section>
+ 
   <!-- Flatpickr Script -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <!-- Your Custom Script -->
