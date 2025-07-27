@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Travelo</title>
+  <title>Travelo | Travel Made Easy</title>
+  <link rel="icon" type="image/png" href="images/Icon.png">
 
   <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
@@ -72,58 +73,115 @@
           </div>
         </div>
 
-<!-- Guests -->
-<div class="searchBar-field relative" id="guest-field">
-  <i class="fas fa-user-friends"></i>
-  <div class="field-content">
-    <label>Guests</label>
-    <input
-      type="text"
-      id="guests"
-      readonly
-      placeholder="Add guests"
-      class="w-full text-sm outline-none bg-transparent mt-1 cursor-pointer"
-    />
-  </div>
+        <!-- Guests -->
+        <div class="searchBar-field relative" id="guest-field">
+          <i class="fas fa-user-friends"></i>
+          <div class="field-content">
+            <label>Guests</label>
+            <input
+              type="text"
+              id="guests"
+              readonly
+              placeholder="Add guests"
+              class="w-full text-sm outline-none bg-transparent mt-1 cursor-pointer"
+            />
+          </div>
 
-<div id="guest-dropdown" class="hidden">
-  <!-- Adults -->
-  <div class="guest-row">
-    <span>Adults</span>
-    <div class="flex items-center">
-      <button class="minus" data-type="adults">–</button>
-      <span id="adults-count" class="count">0</span>
-      <button class="plus" data-type="adults">+</button>
-    </div>
-  </div>
+        <div id="guest-dropdown" class="hidden">
+          <!-- Adults -->
+          <div class="guest-row">
+            <span>Adults</span>
+            <div class="flex items-center">
+              <button class="minus" data-type="adults">–</button>
+              <span id="adults-count" class="count">0</span>
+              <button class="plus" data-type="adults">+</button>
+            </div>
+          </div>
 
-  <!-- Children -->
-  <div class="guest-row">
-    <span>Children</span>
-    <div class="flex items-center">
-      <button class="minus" data-type="children">–</button>
-      <span id="children-count" class="count">0</span>
-      <button class="plus" data-type="children">+</button>
-    </div>
-  </div>
+          <!-- Children -->
+          <div class="guest-row">
+            <span>Children</span>
+            <div class="flex items-center">
+              <button class="minus" data-type="children">–</button>
+              <span id="children-count" class="count">0</span>
+              <button class="plus" data-type="children">+</button>
+            </div>
+          </div>
 
-  <!-- Pets -->
-  <div class="pets-row">
-    <input type="checkbox" id="pets" />
-    <label for="pets">Bringing pets</label>
-  </div>
+          <!-- Pets -->
+          <div class="pets-row">
+            <input type="checkbox" id="pets" />
+            <label for="pets">Bringing pets</label>
+          </div>
 
-  <!-- Done Button -->
-  <button id="done-btn">Done</button>
-</div>
-
-
+          <!-- Done Button -->
+          <button id="done-btn">Done</button>
+        </div>
 
         <!-- Search Button -->
         <button class="search-button"><i class="fas fa-search"></i></button>
       </div>
     </div>
   </section>
+
+
+<section class="nature-section">
+  <div class="nature-intro">
+    <h2>Discover Nature</h2>
+    <p>Explore breathtaking landscapes, from towering mountains to tranquil beaches, dense forests, and timeless heritage sites.</p>
+  </div>
+
+  <div class="card-grid">
+    <!-- Mountains -->
+    <div class="destination-card">
+      <div class="destination-bg">
+        <img src="images/mountain.jpg" alt="Mountains" />
+        <div class="blur-overlay"></div>
+        <div class="destination-content">
+          <h3>Mountains</h3>
+          <p>Discover the majestic Himalayas, home to Mt. Everest and peaceful trekking routes.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beaches -->
+    <div class="destination-card">
+      <div class="destination-bg">
+        <img src="images/beach.jpg" alt="Beaches" />
+        <div class="blur-overlay"></div>
+        <div class="destination-content">
+          <h3>Beaches</h3>
+          <p>Relax on pristine sandy shores, feel the ocean breeze, and enjoy crystal-clear waters.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forests -->
+    <div class="destination-card">
+      <div class="destination-bg">
+        <img src="images/forrest.jpg" alt="Forests" />
+        <div class="blur-overlay"></div>
+        <div class="destination-content">
+          <h3>Forests</h3>
+          <p>Wander through lush greenery, spot wildlife, and breathe in the scent of ancient woods.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Heritage Sites -->
+    <div class="destination-card">
+      <div class="destination-bg">
+        <img src="images/heritage.jpg" alt="Heritage Sites" />
+        <div class="blur-overlay"></div>
+        <div class="destination-content">
+          <h3>Heritage Sites</h3>
+          <p>Step into the past through centuries-old temples, palaces, and cultural landmarks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
