@@ -8,11 +8,11 @@
   <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  
+
   <!-- Flatpickr -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
-  
-  <!-- Your Styles -->
+
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -22,86 +22,111 @@
         <img src="images/NavLogo.png" alt="Travelo Logo" />
       </div>
       <div class="nav-icons">
-        <i class="fas fa-bars"></i>
-        <i class="fas fa-user"></i>
-      </div>
+        <div class="menu-wrapper relative">
+            <i id="hamburger-menu" class="fas fa-bars"></i>
+            <div id="menu-dropdown" class="hidden menu-dropdown">
+            <ul>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">Host</a></li>
+                <li><a href="#">Gift cards</a></li>
+            </ul>
+            <div class="dropdown-divider"></div>
+            <button id="login-signup-btn">Log in or sign up</button>
+            </div>
+        </div>
+        </div>
     </div>
   </header>
 
   <section id="hero">
-  <h1>Unlock Your Ultimate Stay</h1>
-  <p>Dive into deals on stylish hotels, comfortable homes, and beyond.</p>
+    <h1>Unlock Your Ultimate Stay</h1>
+    <p>Dive into deals on stylish hotels, comfortable homes, and beyond.</p>
 
-  <div class="searchBar-container">
-    <div class="searchBar-box">
-      
-      <!-- Where -->
-      <div class="searchBar-field">
-        <i class="fas fa-map-marker-alt"></i>
-        <div class="field-content">
-          <label>Where</label>
-          <input type="text" id="destination" placeholder="Search destinations" />
+    <div class="searchBar-container">
+      <div class="searchBar-box">
+
+        <!-- Where -->
+        <div class="searchBar-field">
+          <i class="fas fa-map-marker-alt"></i>
+          <div class="field-content">
+            <label>Where</label>
+            <input type="text" id="destination" placeholder="Search destinations" />
+          </div>
         </div>
-      </div>
 
-      <!-- Check in -->
-      <div class="searchBar-field" id="checkin-field">
-        <i class="fas fa-calendar-alt"></i>
-        <div class="field-content">
-          <label>Check in</label>
-          <input type="text" id="checkin" placeholder="Add date" readonly />
+        <!-- Check In -->
+        <div class="searchBar-field" id="checkin-field">
+          <i class="fas fa-calendar-alt"></i>
+          <div class="field-content">
+            <label>Check in</label>
+            <input type="text" id="checkin" placeholder="Add date" readonly />
+          </div>
         </div>
-      </div>
 
-      <!-- Check out -->
-      <div class="searchBar-field" id="checkout-field">
-        <i class="fas fa-calendar-alt"></i>
-        <div class="field-content">
-          <label>Check out</label>
-          <input type="text" id="checkout" placeholder="Add date" readonly />
+        <!-- Check Out -->
+        <div class="searchBar-field" id="checkout-field">
+          <i class="fas fa-calendar-alt"></i>
+          <div class="field-content">
+            <label>Check out</label>
+            <input type="text" id="checkout" placeholder="Add date" readonly />
+          </div>
         </div>
-      </div>
 
-      <!-- Guests -->
-        <div id="guests-trigger" class="searchBar-field">
+<!-- Guests -->
+<div class="searchBar-field relative" id="guest-field">
+  <i class="fas fa-user-friends"></i>
   <div class="field-content">
-    <label>Who</label>
-    <input type="text" id="guests" placeholder="Add guests" readonly />
+    <label>Guests</label>
+    <input
+      type="text"
+      id="guests"
+      readonly
+      placeholder="Add guests"
+      class="w-full text-sm outline-none bg-transparent mt-1 cursor-pointer"
+    />
   </div>
-</div>
 
-<div id="guest-dropdown" class="dropdown hidden">
-  <div class="row">
+<div id="guest-dropdown" class="hidden">
+  <!-- Adults -->
+  <div class="guest-row">
     <span>Adults</span>
-    <div>
-      <button class="minus" data-type="adults">-</button>
-      <span id="adults-count">2</span>
+    <div class="flex items-center">
+      <button class="minus" data-type="adults">–</button>
+      <span id="adults-count" class="count">2</span>
       <button class="plus" data-type="adults">+</button>
     </div>
   </div>
-  <div class="row">
+
+  <!-- Children -->
+  <div class="guest-row">
     <span>Children</span>
-    <div>
-      <button class="minus" data-type="children">-</button>
-      <span id="children-count">0</span>
+    <div class="flex items-center">
+      <button class="minus" data-type="children">–</button>
+      <span id="children-count" class="count">0</span>
       <button class="plus" data-type="children">+</button>
     </div>
   </div>
-  <div class="row">
-    <label><input type="checkbox" id="pets" /> Bringing pets</label>
+
+  <!-- Pets -->
+  <div class="pets-row">
+    <input type="checkbox" id="pets" />
+    <label for="pets">Bringing pets</label>
   </div>
+
+  <!-- Done Button -->
   <button id="done-btn">Done</button>
 </div>
-</div>
-      <!-- Search Button -->
-      <button class="search-button"><i class="fas fa-search"></i></button>
+
+
+
+        <!-- Search Button -->
+        <button class="search-button"><i class="fas fa-search"></i></button>
+      </div>
     </div>
-  </div>
-</section>
- 
-  <!-- Flatpickr Script -->
+  </section>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <!-- Your Custom Script -->
   <script src="script.js"></script>
 </body>
 </html>
