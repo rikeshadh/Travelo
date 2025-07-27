@@ -1,94 +1,80 @@
-// script.js
+document.addEventListener("DOMContentLoaded", function () {
+  const dateTrigger = document.getElementById("date-trigger");
+  const calendarDropdown = document.getElementById("calendar-dropdown");
+  const dateRangeInput = document.getElementById("date-range");
+  const guestTrigger = document.getElementById("guests-trigger");
+  const guestDropdown = document.getElementById("guest-dropdown");
+  const guestInput = document.getElementById("guests");
+  const doneBtn = document.getElementById("done-btn");
+  const petsCheckbox = document.getElementById("pets");
 
-const searchForm = document.getElementById('search-form');
-const destinationInput = document.getElementById('destination');
-const checkinInput = document.getElementById('checkin');
-const checkoutInput = document.getElementById('checkout');
-const guestsInput = document.getElementById('guests');
-const errorMsg = document.getElementById('error-msg');
+  const counts = { adults: 2, children: 0 };
+  let calendarInitialized = false;
 
-// Ensure error message is hidden on initial load
-window.addEventListener('DOMContentLoaded', () => {
-  errorMsg.classList.add('hidden');
-});
+  // Handle calendar click
+  dateTrigger.addEventListener("click", function (e) {
+    e.stopPropagation();
+    guestDropdown.classList.add("hidden");
+    calendarDropdown.classList.toggle("hidden");
 
-// Handle form submission
-searchForm.addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  // Reset previous errors
-  [destinationInput, checkinInput, checkoutInput, guestsInput].forEach(input => input.classList.remove('error'));
-  errorMsg.classList.add('hidden');
-
-  const destination = destinationInput.value.trim();
-  const checkin = checkinInput.value;
-  const checkout = checkoutInput.value;
-  const guests = parseInt(guestsInput.value.replace(/\D/g, ''), 10);
-
-  let hasError = false;
-
-  if (!destination) {
-    destinationInput.classList.add('error');
-    hasError = true;
-  }
-
-  if (!checkin || !checkout || new Date(checkin) >= new Date(checkout)) {
-    checkinInput.classList.add('error');
-    checkoutInput.classList.add('error');
-    hasError = true;
-  }
-
-  if (!guests || guests <= 0) {
-    guestsInput.classList.add('error');
-    hasError = true;
-  }
-
-  if (hasError) {
-    errorMsg.classList.remove('hidden');
-    return;
-  }
-
-  // All valid: simulate search
-  console.log('🔍 Search submitted:', {
-    Destination: destination,
-    CheckIn: checkin,
-    CheckOut: checkout,
-    Guests: guests,
+    if (!calendarInitialized) {
+      flatpickr(dateRangeInput, {
+        mode: "range",
+        minDate: "today",
+        inline: true,
+        showMonths: 2,
+        dateFormat: "M j, Y",
+        appendTo: calendarDropdown,
+        onChange: function (selectedDates, dateStr, instance) {
+          if (selectedDates.length === 2) {
+            const [start, end] = selectedDates;
+            const formatted = `${instance.formatDate(start, "M j")} - ${instance.formatDate(end, "M j")}`;
+            dateRangeInput.value = formatted;
+            calendarDropdown.classList.add("hidden");
+          }
+        }
+      });
+      calendarInitialized = true;
+    }
   });
 
-  alert(`Searching for: ${destination}\nFrom ${checkin} to ${checkout}\nFor ${guests} guest(s)`);
-});
+  // Guest dropdown
+  guestTrigger.addEventListener("click", function (e) {
+    e.stopPropagation();
+    calendarDropdown.classList.add("hidden");
+    guestDropdown.classList.toggle("hidden");
+  });
 
+  // Plus and minus buttons
+  document.querySelectorAll(".plus, .minus").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const type = btn.dataset.type;
+      const countEl = document.getElementById(`${type}-count`);
+      if (btn.classList.contains("plus")) {
+        counts[type]++;
+      } else if (counts[type] > 0) {
+        counts[type]--;
+      }
+      countEl.textContent = counts[type];
+    });
+  });
 
-// Guest dropdown logic (NO DUPLICATE DECLARATIONS HERE)
-const guestDropdown = document.getElementById('guest-dropdown');
-const doneButton = document.getElementById('guest-done');
+  // Done button in guest dropdown
+  doneBtn.addEventListener("click", () => {
+    const pets = petsCheckbox.checked;
+    let summary = `${counts.adults} adults · ${counts.children} children · 1 room`;
+    if (pets) summary += " · pets";
+    guestInput.value = summary;
+    guestDropdown.classList.add("hidden");
+  });
 
-// Toggle dropdown when clicking guest input
-guestsInput.addEventListener('click', function (e) {
-  guestDropdown.style.display = 'block';
-  e.stopPropagation();
-});
+  // Click outside to close both dropdowns
+  document.addEventListener("click", () => {
+    calendarDropdown.classList.add("hidden");
+    guestDropdown.classList.add("hidden");
+  });
 
-// Hide dropdown when clicking outside
-document.addEventListener('click', function () {
-  guestDropdown.style.display = 'none';
-});
-
-// Prevent closing when clicking inside dropdown
-guestDropdown.addEventListener('click', function (e) {
-  e.stopPropagation();
-});
-
-// Save and close dropdown when "Done" is clicked
-doneButton.addEventListener('click', function () {
-  const adults = document.getElementById('adults-count').value;
-  const children = document.getElementById('children-count').value;
-  const infants = document.getElementById('infants-count').value;
-  const pets = document.getElementById('pets-toggle').checked ? ' with pets' : '';
-
-  const summary = `${adults} Adults, ${children} Children, ${infants} Infants${pets}`;
-  guestsInput.value = summary;
-
-  guestDropdown.style.display = 'none';
+  // Stop inside dropdowns from closing
+  calendarDropdown.addEventListener("click", (e) => e.stopPropagation());
+  guestDropdown.addEventListener("click", (e) => e.stopPropagation());
 });

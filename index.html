@@ -1,169 +1,80 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travelo</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Travelo</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  
+  <!-- Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+  
+  <!-- Your Styles -->
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-    <!-- Header / Navigation -->
-    <header>
-        <div class="container">
-            <div class="logo">
-            <img src="images/NavLogo.png" alt="Travelo Logo">
+  <header>
+    <div class="container">
+      <div class="logo">
+        <img src="images/NavLogo.png" alt="Travelo Logo" />
+      </div>
+      <div class="nav-icons">
+        <i class="fas fa-bars"></i>
+        <i class="fas fa-user"></i>
+      </div>
+    </div>
+  </header>
+
+  <section id="hero">
+    <h1>Unlock Your Ultimate Stay</h1>
+    <div class="searchBar-container">
+      <div class="searchBar-box">
+        <!-- Destination -->
+        <div class="searchBar-field">
+          <input type="text" id="destination" placeholder="Where are you going?" />
+        </div>
+
+        <!-- Dates -->
+        <div class="searchBar-field" id="date-trigger">
+          <input type="text" id="date-range" readonly value="Add dates" />
+          <div id="calendar-dropdown" class="dropdown hidden"></div>
+        </div>
+
+        <!-- Guests -->
+        <div class="searchBar-field" id="guests-trigger">
+          <input type="text" id="guests" readonly value="Guests" />
+          <div id="guest-dropdown" class="dropdown hidden">
+            <div class="row">
+              Adults:
+              <button class="minus" data-type="adults">-</button>
+              <span id="adults-count">2</span>
+              <button class="plus" data-type="adults">+</button>
             </div>
-            <div class="nav-icons">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-user"></i>
+            <div class="row">
+              Children:
+              <button class="minus" data-type="children">-</button>
+              <span id="children-count">0</span>
+              <button class="plus" data-type="children">+</button>
             </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="hero">
-        <div class="container hero-content">
-            <h1>Unlock Your Ultimate Stay</h1>
-            <p>Dive into deals on stylish hotels, comfortable homes, and beyond.</p>
-            <form id="search-form">
-            <div id="search-container">
-                <div class="fields">
-                <div class="search-field where">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <input type="text" id="destination" placeholder="Search destinations" required />
-                </div>
-                <div class="search-field checkin">
-                    <i class="fas fa-calendar-alt"></i>
-                    <input type="date" id="checkin" required />
-                </div>
-                <div class="search-field checkout">
-                    <i class="fas fa-calendar-alt"></i>
-                    <input type="date" id="checkout" required />
-                </div>
-                <!-- Guest Dropdown -->
-                <div id="guest-dropdown" class="guest-dropdown hidden">
-                <div class="guest-option">
-                    <label for="adults">Adults</label>
-                    <input type="number" id="adults" min="1" max="10" value="1" />
-                </div>
-                <div class="guest-option">
-                    <label for="children">Children</label>
-                    <input type="number" id="children" min="0" max="10" value="0" />
-                </div>
-                <div class="guest-option">
-                    <label for="infants">Infants</label>
-                    <input type="number" id="infants" min="0" max="10" value="0" />
-                </div>
-                <div class="guest-option">
-                    <label>
-                    <input type="checkbox" id="pets" />
-                    Bringing Pets?
-                    </label>
-                </div>
-                <button id="guest-done">Done</button>
-                </div>
-
-                </div>
-
-            <div id="error-msg" class="hidden">Please fill all fields correctly.</div>
-            </form>
-        </div>
-    </section>
-
-    <!-- Categories Section -->
-    <section id="categories">
-        <div class="container">
-            <h2>Popular Destinations</h2>
-            <div class="categories-wrapper">
-                <div class="category-card">
-                    <img src="https://source.unsplash.com/600x400/?mountains" alt="Mountains">
-                    <div class="category-label">Mountains</div>
-                </div>
-                <div class="category-card">
-                    <img src="https://source.unsplash.com/600x400/?lake" alt="Lakes">
-                    <div class="category-label">Lakes</div>
-                </div>
-                <div class="category-card">
-                    <img src="https://source.unsplash.com/600x400/?forest" alt="Forests">
-                    <div class="category-label">Forests</div>
-                </div>
-                <div class="category-card">
-                    <img src="https://source.unsplash.com/600x400/?temple" alt="Heritage Sites">
-                    <div class="category-label">Heritage Sites</div>
-                </div>
+            <div class="row">
+              <label><input type="checkbox" id="pets" /> Pets?</label>
             </div>
+            <button id="done-btn">Done</button>
+          </div>
         </div>
-    </section>
 
-    <!-- Featured Travel Packages Section -->
-    <section id="featured">
-        <div class="container">
-            <h2>Featured Travel Packages</h2>
-            <p>Discover our handpicked travel experiences designed to create unforgettable memories</p>
-            <div class="package-cards">
-                <div class="package-card">
-                    <img src="https://source.unsplash.com/600x400/?mountains" alt="Himalayan Trek Experience">
-                    <div class="package-info">
-                        <div class="package-header">
-                            <span class="label adventure">Adventure</span>
-                            <span class="duration">7 Days</span>
-                        </div>
-                        <h3>Himalayan Trek Experience</h3>
-                        <p>Explore breathtaking mountain trails with expert guides and stunning panoramic views.</p>
-                        <div class="price-book">
-                            <span class="price">$899 <small>per person</small></span>
-                            <button class="book-btn">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="package-card">
-                    <img src="https://source.unsplash.com/600x400/?lake" alt="Serene Lake Retreat">
-                    <div class="package-info">
-                        <div class="package-header">
-                            <span class="label relaxation">Relaxation</span>
-                            <span class="duration">5 Days</span>
-                        </div>
-                        <h3>Serene Lake Retreat</h3>
-                        <p>Unwind by crystal-clear lakes with luxury accommodations and spa treatments.</p>
-                        <div class="price-book">
-                            <span class="price">$649 <small>per person</small></span>
-                            <button class="book-btn">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="package-card">
-                    <img src="https://source.unsplash.com/600x400/?temple" alt="Heritage Cultural Journey">
-                    <div class="package-info">
-                        <div class="package-header">
-                            <span class="label cultural">Cultural</span>
-                            <span class="duration">6 Days</span>
-                        </div>
-                        <h3>Heritage Cultural Journey</h3>
-                        <p>Immerse yourself in rich history and ancient traditions with local guides.</p>
-                        <div class="price-book">
-                            <span class="price">$749 <small>per person</small></span>
-                            <button class="book-btn">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        <!-- Search Button -->
+        <button class="search-button">Search</button>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer (optional) -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Travelo. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+  <!-- Flatpickr Script -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Your Custom Script -->
+  <script src="script.js"></script>
 </body>
 </html>
