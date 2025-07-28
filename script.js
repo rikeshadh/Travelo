@@ -1,15 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+  // =========================
+  // Calendar: Check-in & Check-out
+  // =========================
   const checkinInput = document.getElementById("checkin");
   const checkoutInput = document.getElementById("checkout");
-  const guestField = document.getElementById("guest-field");
-  const guestDropdown = document.getElementById("guest-dropdown");
-  const guestInput = document.getElementById("guests");
-  const doneBtn = document.getElementById("done-btn");
-  const petsCheckbox = document.getElementById("pets");
-  const counts = { adults: 2, children: 0 };
 
-  // Date pickers
-  flatpickr(checkinInput, {
+  let checkoutPicker = null;
+
+  const checkinPicker = flatpickr(checkinInput, {
     minDate: "today",
     dateFormat: "M j, Y",
     onOpen: () => {
@@ -17,19 +16,41 @@ document.addEventListener("DOMContentLoaded", function () {
         checkinInput._flatpickr.calendarContainer.style.width = "auto";
       }, 100);
     },
+    onChange: function (selectedDates) {
+      if (selectedDates.length > 0) {
+        const minCheckoutDate = new Date(selectedDates[0]);
+        minCheckoutDate.setDate(minCheckoutDate.getDate() + 1); // +1 day
+        checkoutPicker.set("minDate", minCheckoutDate);
+        checkoutPicker.clear(); // Clear old value if user reselects check-in
+        setTimeout(() => {
+          checkoutPicker.open(); // Automatically open checkout calendar
+        }, 200);
+      }
+    }
   });
 
-  flatpickr(checkoutInput, {
+  checkoutPicker = flatpickr(checkoutInput, {
     minDate: "today",
     dateFormat: "M j, Y",
     onOpen: () => {
       setTimeout(() => {
         checkoutInput._flatpickr.calendarContainer.style.width = "auto";
       }, 100);
-    },
+    }
   });
 
-  // Toggle dropdown only when clicking guest field itself
+  // =========================
+  // Guest Dropdown
+  // =========================
+
+  const guestField = document.getElementById("guest-field");
+  const guestDropdown = document.getElementById("guest-dropdown");
+  const guestInput = document.getElementById("guests");
+  const doneBtn = document.getElementById("done-btn");
+  const petsCheckbox = document.getElementById("pets");
+  const counts = { adults: 2, children: 0 };
+
+  // Toggle guest dropdown
   guestField.addEventListener("click", function (e) {
     const isClickInsideDropdown = guestDropdown.contains(e.target);
     const isButton = e.target.closest("button");
@@ -39,19 +60,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Hide dropdown when clicking outside
+  // Close guest dropdown on outside click
   document.addEventListener("click", function (e) {
     if (!guestDropdown.contains(e.target) && !guestField.contains(e.target)) {
       guestDropdown.classList.add("hidden");
     }
   });
 
-  // Prevent click inside dropdown from closing it
+  // Prevent dropdown close on internal click
   guestDropdown.addEventListener("click", function (e) {
     e.stopPropagation();
   });
 
-  // Plus/minus buttons
+  // Plus/minus button behavior
   document.querySelectorAll(".plus, .minus").forEach((btn) => {
     btn.addEventListener("click", () => {
       const type = btn.dataset.type;
@@ -65,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Done button behavior
+  // Done button updates input
   doneBtn.addEventListener("click", () => {
     const pets = petsCheckbox.checked;
     let summary = `${counts.adults} adults · ${counts.children} children`;
@@ -73,55 +94,72 @@ document.addEventListener("DOMContentLoaded", function () {
     guestInput.value = summary;
     guestDropdown.classList.add("hidden");
   });
-});
 
+  // =========================
+  // Hamburger Menu Dropdown
+  // =========================
 
+  const hamburger = document.getElementById("hamburger-menu");
+  const menuDropdown = document.getElementById("menu-dropdown");
 
+  hamburger.addEventListener("click", function (e) {
+    e.stopPropagation(); // Prevent closing on immediate open
+    menuDropdown.classList.toggle("hidden");
+  });
 
-// Hamburger Menu Dropdown
-const hamburger = document.getElementById("hamburger-menu");
-const menuDropdown = document.getElementById("menu-dropdown");
+  document.addEventListener("click", function () {
+    menuDropdown.classList.add("hidden");
+  });
 
-// Toggle dropdown on hamburger click
-hamburger.addEventListener("click", function (e) {
-  e.stopPropagation(); // Prevent click from closing it immediately
-  menuDropdown.classList.toggle("hidden");
-});
+  menuDropdown.addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
 
-// Close dropdown on outside click
-document.addEventListener("click", function () {
-  menuDropdown.classList.add("hidden");
-});
+  // =========================
+  // Scroll Behavior: Mini Search Bar
+  // =========================
 
-// Prevent dropdown from closing when clicking inside it
-menuDropdown.addEventListener("click", function (e) {
-  e.stopPropagation();
-});
-
-
-
-// Toggle mini search bar on scroll
-window.addEventListener("scroll", () => {
   const largeSearch = document.querySelector(".searchBar-container");
   const miniSearch = document.getElementById("mini-search-bar");
 
-  if (window.scrollY > 120) {
-    largeSearch.classList.add("hidden");
-    miniSearch.classList.add("visible");
-  } else {
-    largeSearch.classList.remove("hidden");
-    miniSearch.classList.remove("visible");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 120) {
+      largeSearch.classList.add("hidden");
+      miniSearch.classList.add("visible");
+    } else {
+      largeSearch.classList.remove("hidden");
+      miniSearch.classList.remove("visible");
+    }
+  });
+
+  // =========================
+  // Mini Search Bar Interaction
+  // =========================
+
+  document.getElementById("mini-where").addEventListener("click", () => expandFullSearch("where"));
+  document.getElementById("mini-date").addEventListener("click", () => expandFullSearch("date"));
+  document.getElementById("mini-guests").addEventListener("click", () => expandFullSearch("guests"));
+
+  function expandFullSearch(focusTarget) {
+    const heroOffset = document.getElementById("hero").offsetTop;
+
+    window.scrollTo({
+      top: heroOffset,
+      behavior: "smooth"
+    });
+
+    setTimeout(() => {
+      switch (focusTarget) {
+        case "where":
+          document.getElementById("destination").focus();
+          break;
+        case "date":
+          checkinInput._flatpickr.open();
+          break;
+        case "guests":
+          guestDropdown.classList.remove("hidden");
+          break;
+      }
+    }, 200);
   }
 });
-
-// Expand full search bar when clicking any mini button
-document.getElementById("mini-where").addEventListener("click", expandFullSearch);
-document.getElementById("mini-date").addEventListener("click", expandFullSearch);
-document.getElementById("mini-guests").addEventListener("click", expandFullSearch);
-
-function expandFullSearch() {
-  window.scrollTo({
-    top: document.getElementById("hero").offsetTop,
-    behavior: "smooth"
-  });
-}
