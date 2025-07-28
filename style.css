@@ -1,4 +1,4 @@
-/* Reset */
+/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +10,7 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Header */
+/* ===== Header / Nav Bar ===== */
 header {
   position: relative;
   background: linear-gradient(to right, #4facfe, #00f2fe);
@@ -51,23 +51,25 @@ header {
   cursor: pointer;
 }
 
-/* Hero */
+/* ===== Hero Section ===== */
 #hero {
   padding: 120px 20px 60px;
   background: linear-gradient(to right, #4facfe, #00f2fe);
   text-align: center;
   color: white;
 }
+
 #hero h1 {
   font-size: 2.5rem;
   font-weight: 700;
 }
+
 #hero p {
   margin-top: 0.5rem;
   font-size: 1.1rem;
 }
 
-/* Search Bar */
+/* ===== Search Bar ===== */
 .searchBar-container {
   margin-top: 2rem;
   display: flex;
@@ -80,7 +82,6 @@ header {
   transform: translateY(-20px);
   pointer-events: none;
 }
-
 
 .searchBar-box {
   display: flex;
@@ -121,11 +122,13 @@ header {
   width: 100%;
   text-align: left;
 }
+
 .field-content label {
   font-size: 13px;
   font-weight: 600;
   color: #555;
 }
+
 .field-content input {
   font-size: 14px;
   border: none;
@@ -134,7 +137,7 @@ header {
   cursor: pointer;
 }
 
-/* Search Button */
+/* ===== Search Button ===== */
 .search-button {
   background-color: #F5503D;
   color: white;
@@ -162,13 +165,12 @@ header {
   background-color: #e04a4f;
 }
 
-/* Guest Field Wrapper */
+/* ===== Guest Field and Dropdown ===== */
 #guest-field {
   overflow: visible;
   position: relative;
 }
 
-/* Guest Dropdown Box */
 #guest-dropdown {
   position: absolute;
   top: 100%;
@@ -186,12 +188,7 @@ header {
   overflow-y: auto;
 }
 
-/* Hidden Class Toggle */
-.hidden {
-  display: none;
-}
-
-/* Guest Row (Adults / Children) */
+/* Guest row styles */
 .guest-row {
   display: flex;
   justify-content: space-between;
@@ -231,7 +228,7 @@ header {
   font-size: 15px;
 }
 
-/* Pets Row */
+/* Pets row */
 .pets-row {
   display: flex;
   align-items: center;
@@ -243,7 +240,7 @@ header {
   margin-right: 8px;
 }
 
-/* Done Button */
+/* Done Button in Guest Dropdown */
 #done-btn {
   width: 100%;
   background-color: #F5503D;
@@ -257,7 +254,7 @@ header {
   transition: background-color 0.3s ease;
 }
 
-/* Hamburger Menu */
+/* ===== Dropdown Menu (Hamburger) ===== */
 .menu-dropdown {
   position: absolute;
   top: 100%;
@@ -285,6 +282,7 @@ header {
   text-decoration: none;
   transition: background 0.2s ease;
 }
+
 .menu-dropdown li a:hover {
   background-color: #f7f7f7;
   border-radius: 6px;
@@ -296,6 +294,7 @@ header {
   margin: 10px 0;
 }
 
+/* Login/Signup Button */
 #login-signup-btn {
   width: calc(100% - 32px);
   margin: 0 16px;
@@ -311,6 +310,7 @@ header {
   opacity: 0.95;
 }
 
+/* Focus outlines for buttons */
 #login-signup-btn:focus,
 #done-btn:focus,
 .search-button:focus {
@@ -318,7 +318,14 @@ header {
   outline-offset: 2px;
 }
 
-/* Responsive Layout */
+/* ===== Utility Classes ===== */
+.hidden {
+  display: none;
+}
+
+/* ===== Responsive Styles ===== */
+
+/* Small devices (max-width: 640px) */
 @media (max-width: 640px) {
   #hero {
     padding: 100px 16px 40px;
@@ -381,6 +388,7 @@ header {
   }
 }
 
+/* Medium devices (641px to 1023px) */
 @media (min-width: 641px) and (max-width: 1023px) {
   .container {
     flex-wrap: wrap;
@@ -421,12 +429,29 @@ header {
   }
 }
 
-/* Mini search bar */
+/* Large Screens (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .searchBar-box {
+    flex-wrap: nowrap;
+  }
+
+  .searchBar-field {
+    border-bottom: none;
+  }
+
+  .search-button {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+  }
+}
+
+/* ===== Mini Search Bar ===== */
 .mini-search {
   position: absolute;
   left: 50%;
   top: 70%;
-  transform: translate(-50%, -50%); /* Center & float */
+  transform: translate(-50%, -50%);
   background: white;
   border-radius: 40px;
   padding: 10px 16px;
@@ -477,24 +502,7 @@ header {
   background-color: #e04a4f;
 }
 
-/* Large Screens */
-@media (min-width: 1024px) {
-  .searchBar-box {
-    flex-wrap: nowrap;
-  }
-
-  .searchBar-field {
-    border-bottom: none;
-  }
-
-  .search-button {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-  }
-}
-
-/* ===== Discover Nature ===== */
+/* ===== Discover Nature Section ===== */
 .nature-section {
   padding: 2rem;
   background: #f7f7f7;
