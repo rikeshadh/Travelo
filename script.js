@@ -97,3 +97,31 @@ document.addEventListener("click", function () {
 menuDropdown.addEventListener("click", function (e) {
   e.stopPropagation();
 });
+
+
+
+// Toggle mini search bar on scroll
+window.addEventListener("scroll", () => {
+  const largeSearch = document.querySelector(".searchBar-container");
+  const miniSearch = document.getElementById("mini-search-bar");
+
+  if (window.scrollY > 120) {
+    largeSearch.classList.add("hidden");
+    miniSearch.classList.add("visible");
+  } else {
+    largeSearch.classList.remove("hidden");
+    miniSearch.classList.remove("visible");
+  }
+});
+
+// Expand full search bar when clicking any mini button
+document.getElementById("mini-where").addEventListener("click", expandFullSearch);
+document.getElementById("mini-date").addEventListener("click", expandFullSearch);
+document.getElementById("mini-guests").addEventListener("click", expandFullSearch);
+
+function expandFullSearch() {
+  window.scrollTo({
+    top: document.getElementById("hero").offsetTop,
+    behavior: "smooth"
+  });
+}
