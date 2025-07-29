@@ -1,174 +1,159 @@
-/* ===== responsive.css ===== */
+/* ==================== Responsive Styles ==================== */
 
-/* ===== Header / Nav Bar ===== */
-@media (max-width: 640px) {
-  .logo img {
-    height: 48px !important;
+/* ===== General Mobile Adjustments ===== */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .nav-icons i {
-    font-size: 1rem !important;
-    margin-left: 12px !important;
-  }
-}
-
-/* ===== Hero Section ===== */
-@media (max-width: 640px) {
-  #hero {
-    padding: 100px 16px 40px !important;
-    text-align: center !important;
+  .nav-icons {
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
   }
 
   #hero h1 {
-    font-size: 1.8rem !important;
+    font-size: 2rem;
   }
 
   #hero p {
-    font-size: 1rem !important;
+    font-size: 1rem;
   }
-}
 
-/* ===== Search Bar ===== */
-@media (max-width: 640px) {
   .searchBar-container {
-    margin-top: 1.5rem !important;
-    padding: 0 10px !important;
+    margin-top: 1rem;
   }
 
   .searchBar-box {
-    flex-direction: column !important;
-    border-radius: 20px !important;
-    padding: 1rem !important;
-    gap: 10px !important;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
   }
 
   .searchBar-field {
-    border-right: none !important;
-    border-bottom: 1px solid #eee !important;
-    padding: 0.8rem 0 !important;
-    min-width: 100% !important;
-    flex: 1 1 auto !important;
+    flex: 1 1 100%;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    padding: 0.8rem;
   }
 
   .searchBar-field:last-child {
-    border-bottom: none !important;
+    border-bottom: none;
   }
 
   .search-button {
-    width: 100% !important;
-    border-radius: 10px !important;
-    font-size: 16px !important;
-    margin-top: 10px !important;
+    align-self: center;
+    height: 50px;
+    width: 50px;
+    margin-top: 10px;
+  }
+
+  .guest-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mini-search {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mini-btn {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .mini-search-icon {
+    margin-left: 0;
+  }
+
+  .destination-content p {
+    font-size: 14px;
   }
 }
 
-@media (min-width: 641px) and (max-width: 1023px) {
+/* ===== Small Devices: Hide Unnecessary Items ===== */
+@media (max-width: 480px) {
+  .logo img {
+    max-height: 40px;
+  }
+
+  .searchBar-field input {
+    font-size: 13px;
+  }
+
+  .field-content label {
+    font-size: 12px;
+  }
+
+  .guest-row span {
+    font-size: 14px;
+  }
+
+  .guest-row button.plus,
+  .guest-row button.minus {
+    padding: 4px 10px;
+    font-size: 14px;
+  }
+
+  .menu-dropdown {
+    width: 180px;
+  }
+
+  #login-signup-btn {
+    font-size: 13px;
+    padding: 8px 0;
+  }
+}
+
+/* ===== Tablets and Medium Screens ===== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .searchBar-box {
+    padding: 8px;
+  }
+
+  .searchBar-field {
+    padding: 0.8rem;
+  }
+
+  .search-button {
+    height: 52px;
+    width: 52px;
+  }
+
+  .destination-content p {
+    font-size: 15px;
+  }
+}
+
+/* ===== Landscape Phones and Large Phones ===== */
+@media (max-width: 576px) and (orientation: landscape) {
   .container {
-    flex-wrap: wrap !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .searchBar-box {
-    flex-wrap: wrap !important;
-    justify-content: space-between !important;
-    padding: 0.8rem !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
   }
 
   .searchBar-field {
-    flex: 1 1 45% !important;
-    min-width: 220px !important;
-    padding: 1rem !important;
-    border-right: none !important;
-    border-bottom: 1px solid #eee !important;
-  }
-
-  .searchBar-field:last-child {
-    border-bottom: none !important;
-  }
-
-  .search-button {
-    width: 100% !important;
-    margin-top: 12px !important;
-    border-radius: 12px !important;
+    min-width: 140px;
   }
 }
 
-@media (min-width: 1024px) {
+/* ===== Larger Desktops - Improve Spacing ===== */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
   .searchBar-box {
-    flex-wrap: nowrap !important;
+    max-width: 1300px;
   }
-
-  .searchBar-field {
-    border-bottom: none !important;
-  }
-
-  .search-button {
-    width: 52px !important;
-    height: 52px !important;
-    border-radius: 50% !important;
-  }
-}
-
-/* ===== Guest Field and Dropdown ===== */
-@media (max-width: 640px) {
-  #guest-dropdown {
-    width: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-    margin: 10px auto !important;
-  }
-}
-
-@media (min-width: 641px) and (max-width: 1023px) {
-  #guest-dropdown {
-    width: 90% !important;
-    left: 5% !important;
-  }
-}
-
-/* ===== Dropdown Menu (Hamburger) ===== */
-@media (max-width: 640px) {
-  .menu-dropdown {
-    width: 180px !important;
-    right: 10px !important;
-  }
-}
-
-@media (min-width: 641px) and (max-width: 1023px) {
-  .menu-dropdown {
-    width: 200px !important;
-    right: 20px !important;
-  }
-}
-
-/* ===== Calendar ===== */
-@media (max-width: 640px) {
-  .flatpickr-calendar {
-    width: 90vw !important;
-    max-width: 320px !important;
-    font-size: 14px !important;
-  }
-}
-
-@media (min-width: 641px) and (max-width: 1023px) {
-  .flatpickr-calendar {
-    max-width: 350px !important;
-    font-size: 15px !important;
-  }
-}
-
-@media (min-width: 1024px) {
-  .flatpickr-calendar {
-    max-width: 380px !important;
-    font-size: 16px !important;
-  }
-}
-
-/* Disabled / Old Dates for Calendar */
-.flatpickr-day.flatpickr-disabled,
-.flatpickr-day.prevMonthDay,
-.flatpickr-day.nextMonthDay {
-  color: #b0b0b0 !important; /* light grey */
-  background: #f2f2f2 !important;
-  cursor: not-allowed !important;
-  opacity: 0.6 !important;
 }
