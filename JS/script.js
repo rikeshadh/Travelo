@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // =========================
+// =========================
 // Guest Dropdown
 // =========================
 
@@ -93,72 +93,90 @@ doneBtn.addEventListener("click", () => {
   guestDropdown.classList.add("hidden");
 });
 
+// =========================
+// Clear All 
+// =========================
+const clearAllBtn = document.getElementById("clear-all-btn");
 
-  // =========================
-  // Hamburger Menu Dropdown
-  // =========================
+clearAllBtn.addEventListener("click", () => {
+  counts.adults = 0;
+  counts.children = 0;
+  petsCheckbox.checked = false;
 
-  const hamburger = document.getElementById("hamburger-menu");
-  const menuDropdown = document.getElementById("menu-dropdown");
+  // Update counts visually
+  document.getElementById("adults-count").textContent = 0;
+  document.getElementById("children-count").textContent = 0;
 
-  hamburger.addEventListener("click", function (e) {
-    e.stopPropagation(); // Prevent closing on immediate open
-    menuDropdown.classList.toggle("hidden");
-  });
+  // Clear guest input text
+  guestInput.value = "";
+});
 
-  document.addEventListener("click", function () {
-    menuDropdown.classList.add("hidden");
-  });
 
-  menuDropdown.addEventListener("click", function (e) {
-    e.stopPropagation();
-  });
+// =========================
+// Hamburger Menu Dropdown
+// =========================
 
-  // =========================
-  // Scroll Behavior: Mini Search Bar
-  // =========================
+const hamburger = document.getElementById("hamburger-menu");
+const menuDropdown = document.getElementById("menu-dropdown");
 
-  const largeSearch = document.querySelector(".searchBar-container");
-  const miniSearch = document.getElementById("mini-search-bar");
+hamburger.addEventListener("click", function (e) {
+  e.stopPropagation(); // Prevent closing on immediate open
+  menuDropdown.classList.toggle("hidden");
+});
 
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 120) {
-      largeSearch.classList.add("hidden");
-      miniSearch.classList.add("visible");
-    } else {
-      largeSearch.classList.remove("hidden");
-      miniSearch.classList.remove("visible");
-    }
-  });
+document.addEventListener("click", function () {
+  menuDropdown.classList.add("hidden");
+});
 
-  // =========================
-  // Mini Search Bar Interaction
-  // =========================
+menuDropdown.addEventListener("click", function (e) {
+  e.stopPropagation();
+});
 
-  document.getElementById("mini-where").addEventListener("click", () => expandFullSearch("where"));
-  document.getElementById("mini-date").addEventListener("click", () => expandFullSearch("date"));
-  document.getElementById("mini-guests").addEventListener("click", () => expandFullSearch("guests"));
+// =========================
+// Scroll Behavior: Mini Search Bar
+// =========================
 
-  function expandFullSearch(focusTarget) {
-    const heroOffset = document.getElementById("hero").offsetTop;
+const largeSearch = document.querySelector(".searchBar-container");
+const miniSearch = document.getElementById("mini-search-bar");
 
-    window.scrollTo({
-      top: heroOffset,
-      behavior: "smooth"
-    });
-
-    setTimeout(() => {
-      switch (focusTarget) {
-        case "where":
-          document.getElementById("destination").focus();
-          break;
-        case "date":
-          checkinInput._flatpickr.open();
-          break;
-        case "guests":
-          guestDropdown.classList.remove("hidden");
-          break;
-      }
-    }, 200);
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 120) {
+    largeSearch.classList.add("hidden");
+    miniSearch.classList.add("visible");
+  } else {
+    largeSearch.classList.remove("hidden");
+    miniSearch.classList.remove("visible");
   }
+});
+
+// =========================
+// Mini Search Bar Interaction
+// =========================
+
+document.getElementById("mini-where").addEventListener("click", () => expandFullSearch("where"));
+document.getElementById("mini-date").addEventListener("click", () => expandFullSearch("date"));
+document.getElementById("mini-guests").addEventListener("click", () => expandFullSearch("guests"));
+
+function expandFullSearch(focusTarget) {
+  const heroOffset = document.getElementById("hero").offsetTop;
+
+  window.scrollTo({
+    top: heroOffset,
+    behavior: "smooth"
+  });
+
+  setTimeout(() => {
+    switch (focusTarget) {
+      case "where":
+        document.getElementById("destination").focus();
+        break;
+      case "date":
+        checkinInput._flatpickr.open();
+        break;
+      case "guests":
+        guestDropdown.classList.remove("hidden");
+        break;
+    }
+  }, 200);
+}
 });

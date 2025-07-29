@@ -199,3 +199,16 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 }
+
+@media (min-width: 350px) {
+  .guest-dropdown .clear-all-pets-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  .clear-all-row {
+    margin-bottom: 0;
+  }
+}
