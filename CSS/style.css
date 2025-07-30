@@ -756,9 +756,9 @@ header {
 /* Trending Destinations */
 
 .trending-section {
-  max-width: 700px;
-  margin: 0 auto 3rem auto;
-  text-align: center;
+  padding: 2rem;
+  background: #f7f7f7;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .trending-section h2 {
@@ -766,31 +766,33 @@ header {
   font-weight: 800;
   color: #111;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .trending-section p {
   font-size: 1.1rem;
   color: #555;
   line-height: 1.6;
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
-.trending-group {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
+.trending-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
 }
 
 .trending-card {
   position: relative;
-  width: 100%;
-  max-width: 300px;
-  height: 300px;
   overflow: hidden;
   border-radius: 12px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
   background: #000;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .trending-card img {
@@ -799,34 +801,73 @@ header {
   object-fit: cover;
   transition: filter 0.3s ease;
   display: block;
-  border-radius: 12px;
 }
 
-.trending-label {
+/* Blur overlay on hover */
+.blur-overlay {
   position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+/* Text content inside the image */
+.destination-content {
+  position: absolute;
+  z-index: 2;
   bottom: 0;
   width: 100%;
+  color: white;
   padding: 1rem;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-  z-index: 2;
+  transition: background 0.3s ease;
 }
 
-.trending-group-1,
-.trending-group-2 {
+.destination-content h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.destination-content p {
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+/* Hover Effects */
+.trending-card:hover img {
+  filter: blur(4px);
+}
+
+.trending-card:hover .blur-overlay {
+  opacity: 1;
+}
+
+.trending-card:hover .destination-content p {
+  opacity: 1;
+  max-height: 100px;
+}
+
+.trending-group {
   display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
   justify-content: center;
-  gap: 16px;
-  margin-bottom: 16px;
-  flex-wrap: nowrap; /* Prevent wrapping */
+  flex-wrap: wrap;
 }
 
 .trending-group-1 .trending-card {
-  flex: 0 1 calc(50% - 8px); /* 2 cards in a row with 16px gap */
+  flex: 0 1 calc(50% - 0.75rem); /* 2 cards in 1st row */
 }
 
 .trending-group-2 .trending-card {
-  flex: 0 1 calc(33.333% - 10.66px); /* 3 cards with even spacing */
+  flex: 0 1 calc(33.333% - 1rem); /* 3 cards in 2nd row */
 }
