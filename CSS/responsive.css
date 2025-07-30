@@ -231,3 +231,15 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .trending-group-1,
+  .trending-group-2 {
+    flex-wrap: wrap;
+  }
+
+  .trending-group-1 .trending-card,
+  .trending-group-2 .trending-card {
+    flex: 0 1 100%;
+  }
+}
