@@ -180,3 +180,41 @@ function expandFullSearch(focusTarget) {
   }, 200);
 }
 });
+
+// =========================
+// Sign Up & Login 
+// =========================
+
+document.addEventListener("DOMContentLoaded", function () {
+  const loginBtn = document.getElementById("login-signup-btn");
+  const modal = document.getElementById("signup-modal");
+
+  if (!loginBtn || !modal) {
+    console.warn("Login button or modal not found.");
+    return;
+  }
+
+  const closeBtn = modal.querySelector(".signup-close-btn");
+
+  loginBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  }
+
+  window.addEventListener("click", function (e) {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      modal.style.display = "none";
+    }
+  });
+});

@@ -1,65 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ===== Meta & Title ===== -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Travelo | Travel Made Easy</title>
   <link rel="icon" type="image/png" href="images/Icon.webp">
 
-  <!-- Fonts & Icons -->
+  <!-- ===== Fonts & Icons ===== -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-e7VPqzWR4CMV/7y2Sb+wq5WYKhRUnr8WqhVZc5U69UVGJ3uAQp9rxR5M8hDCcQTuLxZP02dQF+nSgRj3oeR5FQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Flatpickr -->
+  <!-- ===== Flatpickr Date Picker CSS ===== -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
 
-  <!-- Custom Styles -->
+  <!-- ===== Custom Styles ===== -->
   <link rel="stylesheet" href="CSS/style.css"/>
   <link rel="stylesheet" href="CSS/responsive.css" />
-
 </head>
 <body>
+
+  <!-- ===== Header / Navigation ===== -->
   <header>
     <div class="container">
       <div class="logo">
         <img src="images/NavLogo.webp" alt="Travelo Logo" />
       </div>
 
-  <!-- Mini Search Bar -->
-    <div id="mini-search-bar" class="mini-search hidden">
-      <button id="mini-where" class="mini-btn">Where</button>
-      <span class="divider"></span>
-      <button id="mini-date" class="mini-btn">Date</button>
-      <span class="divider"></span>
-      <button id="mini-guests" class="mini-btn">Add Guests</button>
-      <button class="mini-search-icon"><i class="fas fa-search"></i></button>
-    </div>
+      <!-- Mini Search Bar -->
+      <div id="mini-search-bar" class="mini-search hidden">
+        <button id="mini-where" class="mini-btn">Where</button>
+        <span class="divider"></span>
+        <button id="mini-date" class="mini-btn">Date</button>
+        <span class="divider"></span>
+        <button id="mini-guests" class="mini-btn">Add Guests</button>
+        <button class="mini-search-icon"><i class="fas fa-search"></i></button>
+      </div>
 
       <div class="nav-icons">
         <div class="menu-wrapper relative">
           <i id="hamburger-menu" class="fas fa-bars" style="color: white; font-size: 24px;"></i>
-            <div id="menu-dropdown" class="hidden menu-dropdown">
+          <div id="menu-dropdown" class="hidden menu-dropdown">
             <ul>
-                <li><a href="#">Help Center</a></li>
-                <li><a href="#">Host</a></li>
-                <li><a href="#">Gift cards</a></li>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Host</a></li>
+              <li><a href="#">Gift cards</a></li>
             </ul>
             <div class="dropdown-divider"></div>
             <button id="login-signup-btn">Log in | Sign up</button>
-            </div>
+          </div>
         </div>
-        </div>
+      </div>
     </div>
   </header>
 
+  
+  <!-- ===== Signup Modal ===== -->
+  <div class="modal-overlay" id="signup-modal">
+    <div class="signup-modal">
+      <button class="signup-close-btn" onclick="closeSignupModal()">×</button>
+      
+      <!-- Modal Header -->
+      <div class="signup-header">
+        <h3>Welcome to Travelo</h3>
+        <p>Sign in or Create an account</p>
+      </div>
+
+      <!-- Signup Form -->
+      <form class="signup-form">
+        <label for="signup-email">Email address</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" required />
+
+        <p class="signup-privacy-note">
+          We'll email you a confirmation link. By signing up, you agree to our
+          <a href="#">Privacy Policy</a>.
+        </p>
+
+        <button type="submit" class="signup-continue-btn">Continue</button>
+
+        <div class="signup-or-separator"><span>or</span></div>
+
+        <button type="button" class="signup-social-btn signup-google">
+          <i class="fab fa-google"></i> Continue with Google
+        </button>
+        <button type="button" class="signup-social-btn signup-apple">
+          <i class="fab fa-apple"></i> Continue with Apple
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Hero Section ===== -->
   <section id="hero">
     <h1>Unlock Your Ultimate Stay</h1>
     <p>Dive into deals on stylish hotels, comfortable homes, and beyond.</p>
 
+    <!-- Search Bar -->
     <div class="searchBar-container">
       <div class="searchBar-box">
 
-        <!-- Where -->
+        <!-- Destination Input -->
         <div class="searchBar-field">
           <i class="fas fa-map-marker-alt"></i>
           <div class="field-content">
@@ -68,7 +109,7 @@
           </div>
         </div>
 
-        <!-- Check In -->
+        <!-- Check In Date -->
         <div class="searchBar-field" id="checkin-field">
           <i class="fas fa-calendar-alt"></i>
           <div class="field-content">
@@ -77,7 +118,7 @@
           </div>
         </div>
 
-        <!-- Check Out -->
+        <!-- Check Out Date -->
         <div class="searchBar-field" id="checkout-field">
           <i class="fas fa-calendar-alt"></i>
           <div class="field-content">
@@ -86,7 +127,7 @@
           </div>
         </div>
 
-        <!-- Guests -->
+        <!-- Guests Selector -->
         <div class="searchBar-field relative" id="guest-field">
           <i class="fas fa-user-friends"></i>
           <div class="field-content">
@@ -100,38 +141,40 @@
             />
           </div>
 
-        <div id="guest-dropdown" class="hidden">
-          <!-- Adults -->
-          <div class="guest-row">
-            <span>Adults</span>
-            <div class="flex items-center">
-              <button class="minus" data-type="adults">–</button>
-              <span id="adults-count" class="count">0</span>
-              <button class="plus" data-type="adults">+</button>
+          <!-- Guests Dropdown -->
+          <div id="guest-dropdown" class="hidden">
+            <!-- Adults -->
+            <div class="guest-row">
+              <span>Adults</span>
+              <div class="flex items-center">
+                <button class="minus" data-type="adults">–</button>
+                <span id="adults-count" class="count">0</span>
+                <button class="plus" data-type="adults">+</button>
+              </div>
             </div>
-          </div>
 
-          <!-- Children -->
-          <div class="guest-row">
-            <span>Children</span>
-            <div class="flex items-center">
-              <button class="minus" data-type="children">–</button>
-              <span id="children-count" class="count">0</span>
-              <button class="plus" data-type="children">+</button>
+            <!-- Children -->
+            <div class="guest-row">
+              <span>Children</span>
+              <div class="flex items-center">
+                <button class="minus" data-type="children">–</button>
+                <span id="children-count" class="count">0</span>
+                <button class="plus" data-type="children">+</button>
+              </div>
             </div>
-          </div>
 
-          <!-- Clear All Button & Pets -->
-          <div class="pets-row">
-            <label for="pets" class="pets-label">
-              <input type="checkbox" id="pets" />
-              Bringing pets
-            </label>
-            <button id="clear-all-btn" class="clear-all-btn" type="button">Clear All</button>
-          </div>
+            <!-- Pets and Clear All -->
+            <div class="pets-row">
+              <label for="pets" class="pets-label">
+                <input type="checkbox" id="pets" />
+                Bringing pets
+              </label>
+              <button id="clear-all-btn" class="clear-all-btn" type="button">Clear All</button>
+            </div>
 
-          <!-- Done Button -->
-          <button id="done-btn">Done</button>
+            <!-- Done Button -->
+            <button id="done-btn">Done</button>
+          </div>
         </div>
 
         <!-- Search Button -->
@@ -140,66 +183,115 @@
     </div>
   </section>
 
+  <!-- ===== Nature Section ===== -->
+  <section class="nature-section">
+    <div class="nature-intro">
+      <h2>Discover Nature</h2>
+      <p>Explore breathtaking landscapes, from towering mountains to tranquil beaches, dense forests, and timeless heritage sites.</p>
+    </div>
 
-<section class="nature-section">
-  <div class="nature-intro">
-    <h2>Discover Nature</h2>
-    <p>Explore breathtaking landscapes, from towering mountains to tranquil beaches, dense forests, and timeless heritage sites.</p>
-  </div>
+    <div class="card-grid">
+      <!-- Mountains Card -->
+      <div class="destination-card">
+        <div class="destination-bg">
+          <img src="images/mountain.webp" alt="Mountains" />
+          <div class="blur-overlay"></div>
+          <div class="destination-content">
+            <h3>Mountains</h3>
+            <p>Discover the majestic Himalayas, home to Mt. Everest and peaceful trekking routes.</p>
+          </div>
+        </div>
+      </div>
 
-  <div class="card-grid">
-    <!-- Mountains -->
-    <div class="destination-card">
-      <div class="destination-bg">
-        <img src="images/mountain.webp" alt="Mountains" />
-        <div class="blur-overlay"></div>
-        <div class="destination-content">
-          <h3>Mountains</h3>
-          <p>Discover the majestic Himalayas, home to Mt. Everest and peaceful trekking routes.</p>
+      <!-- Beaches Card -->
+      <div class="destination-card">
+        <div class="destination-bg">
+          <img src="images/beach.webp" alt="Beaches" />
+          <div class="blur-overlay"></div>
+          <div class="destination-content">
+            <h3>Beaches</h3>
+            <p>Relax on pristine sandy shores, feel the ocean breeze, and enjoy crystal-clear waters.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forests Card -->
+      <div class="destination-card">
+        <div class="destination-bg">
+          <img src="images/forrest.webp" alt="Forests" />
+          <div class="blur-overlay"></div>
+          <div class="destination-content">
+            <h3>Forests</h3>
+            <p>Wander through lush greenery, spot wildlife, and breathe in the scent of ancient woods.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heritage Sites Card -->
+      <div class="destination-card">
+        <div class="destination-bg">
+          <img src="images/heritage.webp" alt="Heritage Sites" />
+          <div class="blur-overlay"></div>
+          <div class="destination-content">
+            <h3>Heritage Sites</h3>
+            <p>Step into the past through centuries-old temples, palaces, and cultural landmarks.</p>
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Beaches -->
-    <div class="destination-card">
-      <div class="destination-bg">
-        <img src="images/beach.webp" alt="Beaches" />
-        <div class="blur-overlay"></div>
-        <div class="destination-content">
-          <h3>Beaches</h3>
-          <p>Relax on pristine sandy shores, feel the ocean breeze, and enjoy crystal-clear waters.</p>
+  <!-- ===== Trending Destinations Section ===== -->
+  <section class="trending-section">
+    <div class="container">
+      <h2 class="trending-title">Trending Destinations</h2>
+      <p class="trending-subtext">Travelers searching for Nepal also booked these</p>
+
+      <div class="trending-card-grid">
+        <div class="trending-card">
+          <div class="trending-bg">
+            <img src="images/pokhara.jpg" alt="Pokhara" />
+            <div class="trending-blur-overlay"></div>
+            <div class="trending-content"><h3>Pokhara</h3></div>
+          </div>
+        </div>
+
+        <div class="trending-card">
+          <div class="trending-bg">
+            <img src="images/kathmandu.jpg" alt="Kathmandu" />
+            <div class="trending-blur-overlay"></div>
+            <div class="trending-content"><h3>Kathmandu</h3></div>
+          </div>
+        </div>
+
+        <div class="trending-card">
+          <div class="trending-bg">
+            <img src="images/sauraha.jpg" alt="Sauraha" />
+            <div class="trending-blur-overlay"></div>
+            <div class="trending-content"><h3>Sauraha</h3></div>
+          </div>
+        </div>
+
+        <div class="trending-card">
+          <div class="trending-bg">
+            <img src="images/nagarkot.jpg" alt="Nagarkot" />
+            <div class="trending-blur-overlay"></div>
+            <div class="trending-content"><h3>Nagarkot</h3></div>
+          </div>
+        </div>
+
+        <div class="trending-card">
+          <div class="trending-bg">
+            <img src="images/lumbini.jpg" alt="Lumbini" />
+            <div class="trending-blur-overlay"></div>
+            <div class="trending-content"><h3>Lumbini</h3></div>
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Forests -->
-    <div class="destination-card">
-      <div class="destination-bg">
-        <img src="images/forrest.webp" alt="Forests" />
-        <div class="blur-overlay"></div>
-        <div class="destination-content">
-          <h3>Forests</h3>
-          <p>Wander through lush greenery, spot wildlife, and breathe in the scent of ancient woods.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Heritage Sites -->
-    <div class="destination-card">
-      <div class="destination-bg">
-        <img src="images/heritage.webp" alt="Heritage Sites" />
-        <div class="blur-overlay"></div>
-        <div class="destination-content">
-          <h3>Heritage Sites</h3>
-          <p>Step into the past through centuries-old temples, palaces, and cultural landmarks.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-  <!-- Scripts -->
+  <!-- ===== Scripts ===== -->
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="JS/script.js"></script>
 </body>

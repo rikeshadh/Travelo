@@ -212,3 +212,22 @@
     margin-bottom: 0;
   }
 }
+
+@media (max-width: 768px) {
+  .trending-row-1 {
+    max-width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  .trending-row-2 {
+    max-width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .trending-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
