@@ -243,3 +243,19 @@
     flex: 0 1 100%;
   }
 }
+
+
+@media (max-width: 900px) {
+  .trending-container {
+    flex-direction: column;
+  }
+  .trending-group-left,
+  .trending-group-right {
+    flex: 1 1 100%;
+    align-items: center;
+  }
+  .trending-group-right > .trending-group-1,
+  .trending-group-right > .trending-group-2 {
+    justify-content: center;
+  }
+}

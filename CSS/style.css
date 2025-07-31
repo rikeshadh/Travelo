@@ -671,6 +671,13 @@ header {
   margin-bottom: 1rem;
 }
 
+.section-header h3 {
+  font-size: 2rem;        
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 1rem;
+}
+
 .section-header p {
   font-size: 1.1rem;
   color: #555;
@@ -778,11 +785,11 @@ header {
 }
 
 .trending-group-1 .trending-card {
-  flex: 0 1 calc(22.5% - 0.375rem);  
+  flex: 0 1 calc(25.9% - 0.375rem);
 }
 
 .trending-group-2 .trending-card {
-  flex: 0 1 calc(15% - 0.5rem);  
+  flex: 0 1 calc(17.25% - 0.5rem);
 }
 
 .trending-card {
@@ -852,4 +859,38 @@ header {
 .trending-card:hover .destination-content p {
   opacity: 1;
   max-height: 100px;
+}
+
+.trending-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* Left group styles */
+.trending-group-left {
+  flex: 0 1 45%; /* takes about 45% width */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: flex-start;
+}
+
+/* Right group styles */
+.trending-group-right {
+  flex: 0 1 50%; /* about 50% width */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-end; /* push content to the right */
+}
+
+/* Override existing groups inside right group to full width */
+.trending-group-right > .trending-group-1,
+.trending-group-right > .trending-group-2 {
+  width: 100%;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: flex-end; /* align cards right */
 }
