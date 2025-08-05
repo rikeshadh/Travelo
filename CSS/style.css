@@ -443,7 +443,7 @@ header {
 .mini-search {
   position: absolute;
   left: 50%;
-  top: 70%;
+  top: 35%;  
   transform: translate(-50%, -50%);
   background: white;
   border-radius: 40px;
@@ -778,7 +778,7 @@ header {
   position: relative;
 }
 
-.section-title {
+.section-header h3 {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 2rem;
@@ -786,20 +786,16 @@ header {
   color: #222;
 }
 
-.carousel-track-wrapper {
-  overflow: hidden;
-  width: 100%;
-}
-
-/* Carousel container */
+/* Carousel Container */
 .carousel-wrapper {
-  padding: 0 48px; 
+  padding: 0 48px;
   position: relative;
   display: flex;
   align-items: center;
-  overflow: visible;  
+  overflow: visible;
 }
 
+/* Arrows */
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -821,7 +817,7 @@ header {
 }
 
 .carousel-arrow.left {
-  left: -12px
+  left: -12px;
 }
 
 .carousel-arrow.right {
@@ -837,22 +833,23 @@ header {
   outline: none;
 }
 
-/* Carousel track */
+/* Carousel Track */
 .card-carousel {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 1rem 2rem; /* Prevent cut-off of first/last cards */
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-behavior: smooth;
 }
 
 .card-carousel::-webkit-scrollbar {
   display: none;
 }
 
-/* Individual cards */
+/* Individual Cards */
 .trending-card {
   flex: 0 0 280px;
   scroll-snap-align: center;
@@ -862,21 +859,19 @@ header {
   background: #000;
   transition: transform 0.3s ease;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-
-  padding: 8px; /* added padding to give breathing room inside */
-  box-sizing: border-box; /* include padding in width */
+  box-sizing: border-box;
 }
 
+/* Card Image */
 .trending-card img {
   width: 100%;
   height: 280px;
   object-fit: cover;
   display: block;
   transition: filter 0.3s ease;
-
-  border-radius: 8px; /* round image corners to match card padding */
 }
 
+/* Blur Overlay */
 .blur-overlay {
   position: absolute;
   inset: 0;
@@ -888,6 +883,7 @@ header {
   backdrop-filter: blur(6px);
 }
 
+/* Destination Text Overlay */
 .destination-content {
   position: absolute;
   z-index: 2;
@@ -913,7 +909,7 @@ header {
   transition: opacity 0.4s ease, max-height 0.4s ease;
 }
 
-/* Hover effects */
+/* Hover Effects */
 .trending-card:hover img {
   filter: blur(4px);
 }
@@ -927,8 +923,8 @@ header {
   max-height: 100px;
 }
 
-/* Active card slightly larger */
-.trending-card.active {
-  transform: scale(1.08);
+/* Hover Scaling Effect */
+.trending-card:hover {
+  transform: scale(1.05);
   z-index: 2;
 }
