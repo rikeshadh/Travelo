@@ -176,40 +176,61 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // =========================
-  // Trending Section Carousel
+  // Trending Section
   // =========================
+
   const carousel = document.getElementById("cardCarousel");
   const cards = carousel?.querySelectorAll(".trending-card") || [];
   const leftBtn = document.querySelector(".carousel-arrow.left");
   const rightBtn = document.querySelector(".carousel-arrow.right");
 
   let currentIndex = 0;
-  const cardWidth = cards[0]?.offsetWidth + 16 || 296;  
+  let cardWidth = 296; // default fallback
 
-  function scrollToCard(index) {
-    const maxIndex = cards.length - 1;
-    if (index < 0) index = 0;
-    if (index > maxIndex) index = maxIndex;
-    carousel.scrollTo({
-      left: index * cardWidth,
-      behavior: "smooth"
+  if (cards.length > 0) {
+    // Dynamically track card width (responsive)
+    const updateCardWidth = () => {
+      cardWidth = cards[0].offsetWidth + 16; // 16px margin or gap
+    };
+
+    updateCardWidth(); // Initial width
+
+    const resizeObserver = new ResizeObserver(updateCardWidth);
+    resizeObserver.observe(cards[0]);
+
+    function scrollToCard(index) {
+      const maxIndex = cards.length - 1;
+      if (index < 0) index = 0;
+      if (index > maxIndex) index = maxIndex;
+      carousel.scrollTo({
+        left: index * cardWidth,
+        behavior: "smooth"
+      });
+      currentIndex = index;
+    }
+
+    // Scroll buttons
+    if (leftBtn && rightBtn) {
+      leftBtn.addEventListener("click", () => {
+        scrollToCard(currentIndex - 1);
+      });
+
+      rightBtn.addEventListener("click", () => {
+        scrollToCard(currentIndex + 1);
+      });
+    }
+
+    // Sync currentIndex with manual scrolling
+    carousel.addEventListener("scroll", () => {
+      currentIndex = Math.round(carousel.scrollLeft / cardWidth);
     });
-    currentIndex = index;
-  }
 
-  if (leftBtn && rightBtn && cards.length) {
-    leftBtn.addEventListener("click", () => {
-      scrollToCard(currentIndex - 1);
-    });
+    // Initialize position
+    scrollToCard(currentIndex);
 
-    rightBtn.addEventListener("click", () => {
-      scrollToCard(currentIndex + 1);
-    });
-
-    // Autoplay every 3 seconds
-    setInterval(() => {
-      let nextIndex = (currentIndex + 1) % cards.length;
-      scrollToCard(nextIndex);
-    }, 3000);
-  }
-});
+   setInterval(() => {
+    const nextIndex = (currentIndex + 1) % cards.length;
+    scrollToCard(nextIndex);
+      }, 3000);
+    }
+  });
