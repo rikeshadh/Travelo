@@ -928,3 +928,19 @@ header {
   transform: scale(1.05);
   z-index: 2;
 }
+
+.trending-card.focused {
+  transform: scale(1.1);
+  border: 2px solid #D4AF37;  
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);  
+  border-radius: 12px;
+  z-index: 5;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+  background-color: #fff;
+}
+
+.trending-card:not(.focused):hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  border-color: #ddd;
+}

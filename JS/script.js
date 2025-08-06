@@ -179,58 +179,82 @@ document.addEventListener("DOMContentLoaded", function () {
   // Trending Section
   // =========================
 
-  const carousel = document.getElementById("cardCarousel");
-  const cards = carousel?.querySelectorAll(".trending-card") || [];
-  const leftBtn = document.querySelector(".carousel-arrow.left");
-  const rightBtn = document.querySelector(".carousel-arrow.right");
+const carousel = document.getElementById("cardCarousel");
+const originalCards = Array.from(carousel.querySelectorAll(".trending-card"));
+const leftBtn = document.querySelector(".carousel-arrow.left");
+const rightBtn = document.querySelector(".carousel-arrow.right");
 
-  let currentIndex = 0;
-  let cardWidth = 296; // default fallback
+let cardWidth = 296;
+let totalCards = originalCards.length;
+let currentIndex = 0;
+let allCards = [];
 
-  if (cards.length > 0) {
-    // Dynamically track card width (responsive)
-    const updateCardWidth = () => {
-      cardWidth = cards[0].offsetWidth + 16; // 16px margin or gap
-    };
+function updateCardWidth() {
+  cardWidth = originalCards[0].offsetWidth + 16;
+}
 
-    updateCardWidth(); // Initial width
+function cloneCards() {
+  const before = originalCards.slice(-1).map(card => card.cloneNode(true));
+  const after = originalCards.slice(0, 1).map(card => card.cloneNode(true));
 
-    const resizeObserver = new ResizeObserver(updateCardWidth);
-    resizeObserver.observe(cards[0]);
+  allCards = [...before, ...originalCards, ...after];
+  carousel.innerHTML = "";
+  allCards.forEach(card => carousel.appendChild(card));
 
-    function scrollToCard(index) {
-      const maxIndex = cards.length - 1;
-      if (index < 0) index = 0;
-      if (index > maxIndex) index = maxIndex;
-      carousel.scrollTo({
-        left: index * cardWidth,
-        behavior: "smooth"
-      });
-      currentIndex = index;
-    }
-
-    // Scroll buttons
-    if (leftBtn && rightBtn) {
-      leftBtn.addEventListener("click", () => {
-        scrollToCard(currentIndex - 1);
-      });
-
-      rightBtn.addEventListener("click", () => {
-        scrollToCard(currentIndex + 1);
-      });
-    }
-
-    // Sync currentIndex with manual scrolling
-    carousel.addEventListener("scroll", () => {
-      currentIndex = Math.round(carousel.scrollLeft / cardWidth);
-    });
-
-    // Initialize position
-    scrollToCard(currentIndex);
-
-   setInterval(() => {
-    const nextIndex = (currentIndex + 1) % cards.length;
-    scrollToCard(nextIndex);
-      }, 3000);
-    }
+  requestAnimationFrame(() => {
+    carousel.scrollLeft = cardWidth;
+    currentIndex = 0;
+    updateFocus();
   });
+}
+
+function scrollToIndex(index) {
+  currentIndex = index;
+  const scrollPos = (index + 1) * cardWidth - carousel.offsetWidth / 2 + cardWidth / 2;
+  carousel.scrollTo({ left: scrollPos, behavior: "smooth" });
+  updateFocus();
+}
+
+function updateFocus() {
+  allCards.forEach(card => card.classList.remove("focused"));
+  const focusedCard = allCards[currentIndex + 1];
+  if (focusedCard) focusedCard.classList.add("focused");
+}
+
+function checkLooping() {
+  const scrollLeft = carousel.scrollLeft;
+
+  if (scrollLeft <= 0) {
+    carousel.scrollLeft = cardWidth * totalCards;
+    currentIndex = totalCards - 1;
+    updateFocus();
+  } else if (scrollLeft >= cardWidth * (totalCards + 1)) {
+    carousel.scrollLeft = cardWidth;
+    currentIndex = 0;
+    updateFocus();
+  }
+}
+
+leftBtn?.addEventListener("click", () => {
+  currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+  scrollToIndex(currentIndex);
+});
+
+rightBtn?.addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % totalCards;
+  scrollToIndex(currentIndex);
+});
+
+carousel.addEventListener("scroll", () => {
+  checkLooping();
+});
+
+const resizeObserver = new ResizeObserver(updateCardWidth);
+resizeObserver.observe(originalCards[0]);
+
+updateCardWidth();
+cloneCards();
+
+
+
+});
