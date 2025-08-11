@@ -179,81 +179,135 @@ document.addEventListener("DOMContentLoaded", function () {
   // Trending Section
   // =========================
 
-const carousel = document.getElementById("cardCarousel");
-const originalCards = Array.from(carousel.querySelectorAll(".trending-card"));
-const leftBtn = document.querySelector(".carousel-arrow.left");
-const rightBtn = document.querySelector(".carousel-arrow.right");
+  const carousel = document.getElementById("cardCarousel");
+  const origCards = Array.from(carousel.querySelectorAll(".trending-card"));
+  const leftBtn = document.querySelector(".carousel-arrow.left");
+  const rightBtn = document.querySelector(".carousel-arrow.right");
 
-let cardWidth = 296;
-let totalCards = originalCards.length;
-let currentIndex = 0;
-let allCards = [];
+  let totalCards = origCards.length;
+  let cardWidth = 0;
+  let gap = 16;
+  let currentIndex = 0;
+  const sets = 5; // number of repeated sets (odd is easiest)
+  let middleOffset = totalCards * Math.floor(sets / 2);
 
-function updateCardWidth() {
-  cardWidth = originalCards[0].offsetWidth + 16;
-}
+  // helper to compute offset that centers a card in the visible area
+  function getCenterOffset(firstCardEl) {
+    const visibleWidth = carousel.clientWidth;
+    const cardW = firstCardEl.offsetWidth;
+    return (visibleWidth - cardW) / 2;
+  }
 
-function cloneCards() {
-  const before = originalCards.slice(-1).map(card => card.cloneNode(true));
-  const after = originalCards.slice(0, 1).map(card => card.cloneNode(true));
+  function setupCarousel() {
+    // clear & build repeated sets
+    carousel.innerHTML = "";
+    const all = [];
+    for (let i = 0; i < sets; i++) {
+      origCards.forEach(c => all.push(c.cloneNode(true)));
+    }
+    all.forEach(c => carousel.appendChild(c));
 
-  allCards = [...before, ...originalCards, ...after];
-  carousel.innerHTML = "";
-  allCards.forEach(card => carousel.appendChild(card));
+    // compute actual gap (fallback to 16px)
+    const computedGap = getComputedStyle(carousel).gap;
+    gap = computedGap ? parseFloat(computedGap) || 16 : 16;
 
-  requestAnimationFrame(() => {
-    carousel.scrollLeft = cardWidth;
-    currentIndex = 0;
-    updateFocus();
-  });
-}
+    // compute card width based on an appended clone
+    const firstCard = carousel.querySelector(".trending-card");
+    if (!firstCard) return;
+    cardWidth = firstCard.offsetWidth + gap;
 
-function scrollToIndex(index) {
-  currentIndex = index;
-  const scrollPos = (index + 1) * cardWidth - carousel.offsetWidth / 2 + cardWidth / 2;
-  carousel.scrollTo({ left: scrollPos, behavior: "smooth" });
-  updateFocus();
-}
+    // start in the middle set so we can scroll freely both ways
+    currentIndex = totalCards * Math.floor(sets / 2); // e.g., sets=5 -> start at 2*totalCards
+    const offset = getCenterOffset(firstCard);
 
-function updateFocus() {
-  allCards.forEach(card => card.classList.remove("focused"));
-  const focusedCard = allCards[currentIndex + 1];
-  if (focusedCard) focusedCard.classList.add("focused");
-}
+    // position without smooth animation
+    carousel.style.scrollBehavior = "auto";
+    carousel.scrollLeft = currentIndex * cardWidth - offset;
+    carousel.style.scrollBehavior = "smooth";
 
-function checkLooping() {
-  const scrollLeft = carousel.scrollLeft;
-
-  if (scrollLeft <= 0) {
-    carousel.scrollLeft = cardWidth * totalCards;
-    currentIndex = totalCards - 1;
-    updateFocus();
-  } else if (scrollLeft >= cardWidth * (totalCards + 1)) {
-    carousel.scrollLeft = cardWidth;
-    currentIndex = 0;
     updateFocus();
   }
-}
 
-leftBtn?.addEventListener("click", () => {
-  currentIndex = (currentIndex - 1 + totalCards) % totalCards;
-  scrollToIndex(currentIndex);
-});
+  // set focused class on the centered card
+  function updateFocus() {
+    const all = Array.from(carousel.querySelectorAll(".trending-card"));
+    all.forEach(c => c.classList.remove("focused"));
+    const target = all[currentIndex];
+    if (target) target.classList.add("focused");
+  }
 
-rightBtn?.addEventListener("click", () => {
-  currentIndex = (currentIndex + 1) % totalCards;
-  scrollToIndex(currentIndex);
-});
+  function scrollToIndex(index) {
+    currentIndex = index;
+    const firstCard = carousel.querySelector(".trending-card");
+    if (!firstCard) return;
+    const offset = getCenterOffset(firstCard);
+    carousel.scrollTo({ left: currentIndex * cardWidth - offset, behavior: "smooth" });
+    updateFocus();
+  }
 
-carousel.addEventListener("scroll", () => {
-  checkLooping();
-});
+  // invisible reset when we wander too close to ends
+  function checkInfiniteLoop() {
+    const minIndex = totalCards;                // avoid the very first set
+    const maxIndex = totalCards * (sets - 1);   // avoid the very last set
+    const firstCard = carousel.querySelector(".trending-card");
+    if (!firstCard) return;
+    const offset = getCenterOffset(firstCard);
 
-const resizeObserver = new ResizeObserver(updateCardWidth);
-resizeObserver.observe(originalCards[0]);
+    if (currentIndex < minIndex) {
+      // map index into the middle region (add middleOffset)
+      currentIndex += middleOffset;
+      carousel.style.scrollBehavior = "auto";
+      carousel.scrollLeft = currentIndex * cardWidth - offset;
+      carousel.style.scrollBehavior = "smooth";
+    } else if (currentIndex >= maxIndex) {
+      currentIndex -= middleOffset;
+      carousel.style.scrollBehavior = "auto";
+      carousel.scrollLeft = currentIndex * cardWidth - offset;
+      carousel.style.scrollBehavior = "smooth";
+    }
+  }
 
-updateCardWidth();
-cloneCards();
+  // arrow handlers
+  leftBtn?.addEventListener("click", () => {
+    currentIndex--;
+    scrollToIndex(currentIndex);
+    setTimeout(checkInfiniteLoop, 360);
+  });
+
+  rightBtn?.addEventListener("click", () => {
+    currentIndex++;
+    scrollToIndex(currentIndex);
+    setTimeout(checkInfiniteLoop, 360);
+  });
+
+  // if user drags/scrolls manually, track currentIndex and fix looping (debounced)
+  let scrollTimeout = null;
+  carousel.addEventListener("scroll", () => {
+    const firstCard = carousel.querySelector(".trending-card");
+    if (!firstCard) return;
+    const offset = getCenterOffset(firstCard);
+
+    // compute nearest index from scrollLeft
+    const approxIndex = Math.round((carousel.scrollLeft + offset) / cardWidth);
+    if (approxIndex !== currentIndex) {
+      currentIndex = approxIndex;
+      updateFocus();
+    }
+
+    // debounce the loop check so it runs when scroll stops
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      checkInfiniteLoop();
+    }, 150);
+  });
+
+  window.addEventListener("resize", () => {
+    // rebuild so sizes & centering are recalculated
+    setupCarousel();
+  });
+
+  // initial setup
+  setupCarousel();
 
 
 
