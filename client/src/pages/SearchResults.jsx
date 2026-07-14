@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 
 // Leaflet CDN icon fix to prevent import issues
@@ -17,7 +16,7 @@ const markerIcon = new L.Icon({
 });
 
 const SearchResults = () => {
-  const { user, toggleWishlist } = useContext(AuthContext);
+  const { user, toggleWishlist, setShowAuthModal } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -45,14 +44,89 @@ const SearchResults = () => {
   const [isListView, setIsListView] = useState(false);
   const [showMap, setShowMap] = useState(true);
 
+  // Raw Leaflet Ref Integrations
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
+  const markersRef = useRef([]);
+
+  useEffect(() => {
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!showMap || !mapContainerRef.current) {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+      return;
+    }
+
+    if (!mapRef.current) {
+      mapRef.current = L.map(mapContainerRef.current).setView([28.3, 84.1], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(mapRef.current);
+    }
+
+    markersRef.current.forEach(marker => marker.remove());
+    markersRef.current = [];
+
+    if (properties.length === 0) return;
+
+    const markerIcon = L.icon({
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
+    const bounds = [];
+
+    properties.forEach(p => {
+      if (p.location && p.location.lat && p.location.lng) {
+        const popupContent = `
+          <div style="width: 150px; font-family: 'Roboto', sans-serif;">
+            <img src="${p.imageGallery[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=300&q=80'}" alt="${p.title}" style="width: 100%; height: 80px; object-fit: cover; border-radius: 4px;" />
+            <h4 style="font-size: 13px; margin: 6px 0 2px 0; color: #333;">${p.title}</h4>
+            <p style="font-size: 11px; margin: 0; color: #666;">${p.location.city}</p>
+            <p style="font-size: 12px; font-weight: bold; margin: 4px 0 0 0; color: #F5503D;">$${p.pricePerNight} / night</p>
+          </div>
+        `;
+
+        const marker = L.marker([p.location.lat, p.location.lng], { icon: markerIcon })
+          .addTo(mapRef.current)
+          .bindPopup(popupContent);
+        markersRef.current.push(marker);
+        bounds.push([p.location.lat, p.location.lng]);
+      }
+    });
+
+    if (bounds.length > 0) {
+      mapRef.current.fitBounds(bounds, { padding: [30, 30] });
+    }
+  }, [properties, showMap]);
+
   const amenitiesOptions = ['Wifi', 'Pool', 'Air Conditioning', 'Kitchen', 'Heating', 'Hot Tub', 'Breakfast'];
 
   const fetchResults = async () => {
     setLoading(true);
     try {
+      const queryParams = new URLSearchParams(location.search);
+      const urlSearch = queryParams.get('search') || '';
+      const urlType = queryParams.get('type') || 'all';
+
       const params = {
-        search,
-        propertyType,
+        search: urlSearch,
+        propertyType: urlType,
         priceMax,
         page,
         sort,
@@ -67,6 +141,10 @@ const SearchResults = () => {
       setProperties(res.data.properties);
       setPages(res.data.pages);
       setTotal(res.data.total);
+
+      // Keep local input fields synchronized with URL parameters
+      setSearch(urlSearch);
+      setPropertyType(urlType);
     } catch (err) {
       console.error('Error searching properties', err);
     }
@@ -75,7 +153,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     fetchResults();
-  }, [location.search, page, sort, propertyType, priceMax, rating, selectedAmenities, isListView]);
+  }, [location.search, page, sort, priceMax, rating, selectedAmenities, isListView]);
 
   const handleAmenityChange = (amenity) => {
     setSelectedAmenities((prev) =>
@@ -88,7 +166,7 @@ const SearchResults = () => {
   const handleWishlistToggle = async (e, id) => {
     e.stopPropagation();
     if (!user) {
-      alert('Please log in to add items to your wishlist.');
+      setShowAuthModal(true);
       return;
     }
     await toggleWishlist(id);
@@ -114,7 +192,10 @@ const SearchResults = () => {
             }}
           />
           <button
-            onClick={fetchResults}
+            onClick={() => {
+              setPage(1);
+              navigate(`/search?search=${search}&type=${propertyType}`);
+            }}
             style={{
               background: 'var(--accent-color)',
               color: 'white',
@@ -200,7 +281,11 @@ const SearchResults = () => {
             <h4>Property Type</h4>
             <select
               value={propertyType}
-              onChange={(e) => setPropertyType(e.target.value)}
+              onChange={(e) => {
+                setPropertyType(e.target.value);
+                setPage(1);
+                navigate(`/search?search=${search}&type=${e.target.value}`);
+              }}
               style={{
                 width: '100%',
                 padding: '10px',
@@ -402,28 +487,7 @@ const SearchResults = () => {
         {/* Map View sidebar */}
         {showMap && properties.length > 0 && (
           <div className="map-container">
-            <MapContainer
-              center={[properties[0].location.lat, properties[0].location.lng]}
-              zoom={5}
-              style={{ width: '100%', height: '100%', zIndex: 1 }}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {properties.map((p) => (
-                <Marker key={p._id} position={[p.location.lat, p.location.lng]} icon={markerIcon}>
-                  <Popup>
-                    <div style={{ width: '150px' }}>
-                      <img src={p.imageGallery[0]} alt={p.title} style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
-                      <h4 style={{ fontSize: '13px', margin: '6px 0 2px 0' }}>{p.title}</h4>
-                      <p style={{ fontSize: '11px', margin: 0, color: 'var(--text-muted)' }}>{p.location.city}</p>
-                      <p style={{ fontSize: '12px', fontWeight: 'bold', margin: '4px 0 0 0' }}>${p.pricePerNight} / night</p>
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
+            <div ref={mapContainerRef} style={{ width: '100%', height: '100%', borderRadius: '16px', zIndex: 1 }} />
           </div>
         )}
       </div>

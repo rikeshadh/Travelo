@@ -27,7 +27,9 @@ router.get('/', async (req, res) => {
       query.$or = [
         { 'location.city': { $regex: search, $options: 'i' } },
         { 'location.country': { $regex: search, $options: 'i' } },
-        { title: { $regex: search, $options: 'i' } }
+        { 'location.address': { $regex: search, $options: 'i' } },
+        { title: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
       ];
     }
 

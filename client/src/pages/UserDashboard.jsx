@@ -78,11 +78,17 @@ const UserDashboard = () => {
       {/* Side Navigation */}
       <div className="dashboard-nav">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '30px', padding: '0 10px' }}>
-          <img
-            src={user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'}
-            alt="Profile Avatar"
-            style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }}
-          />
+          {user?.avatar ? (
+            <img
+              src={user.avatar}
+              alt="Profile Avatar"
+              style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }}
+            />
+          ) : (
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--primary-gradient)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '18px' }}>
+              {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+            </div>
+          )}
           <div>
             <h4 style={{ fontSize: '15px', fontWeight: 'bold' }}>{user?.name}</h4>
             <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{user?.role}</span>

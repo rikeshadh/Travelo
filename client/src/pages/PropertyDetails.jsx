@@ -6,7 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, setShowAuthModal } = useContext(AuthContext);
 
   const [property, setProperty] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -46,7 +46,7 @@ const PropertyDetails = () => {
   const handleBookingSubmit = (e) => {
     e.preventDefault();
     if (!user) {
-      alert('Please sign in or create an account to book this property.');
+      setShowAuthModal(true);
       return;
     }
     if (!checkin || !checkout) {
@@ -132,11 +132,17 @@ const PropertyDetails = () => {
               <h3>Hosted by {property.host.name}</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>{property.host.bio || 'Local travel accommodation partner.'}</p>
             </div>
-            <img
-              src={property.host.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&h=100&q=80'}
-              alt={property.host.name}
-              style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }}
-            />
+            {property.host.avatar ? (
+              <img
+                src={property.host.avatar}
+                alt={property.host.name}
+                style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }}
+              />
+            ) : (
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'var(--primary-gradient)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '20px' }}>
+                {property.host.name ? property.host.name.charAt(0).toUpperCase() : 'H'}
+              </div>
+            )}
           </section>
 
           {/* Description */}
@@ -170,7 +176,13 @@ const PropertyDetails = () => {
                 reviews.map((r) => (
                   <div key={r._id} className="review-item">
                     <div className="review-user">
-                      <img src={r.userAvatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=50&h=50&q=80'} alt={r.userName} />
+                      {r.userAvatar ? (
+                        <img src={r.userAvatar} alt={r.userName} />
+                      ) : (
+                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--primary-gradient)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '16px', marginRight: '12px' }}>
+                          {r.userName ? r.userName.charAt(0).toUpperCase() : 'U'}
+                        </div>
+                      )}
                       <div>
                         <div className="review-user-name">{r.userName}</div>
                         <div className="review-date">{new Date(r.createdAt).toLocaleDateString()}</div>

@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { DarkModeContext } from '../context/DarkModeContext';
 import { NotificationContext } from '../context/NotificationContext';
 
 const Navbar = () => {
-  const { user, login, signup, loginWithGoogleMock, logout } = useContext(AuthContext);
+  const { user, login, signup, loginWithGoogleMock, logout, showAuthModal, setShowAuthModal } = useContext(AuthContext);
   const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
   const { notifications, unreadCount, markAsRead } = useContext(NotificationContext);
 
   const [scrolled, setScrolled] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   
   // Auth Form State
   const [isLoginView, setIsLoginView] = useState(true);
@@ -22,6 +21,8 @@ const Navbar = () => {
   const [authError, setAuthError] = useState('');
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,13 +75,23 @@ const Navbar = () => {
           
           {/* Logo */}
           <div className="logo">
-            <Link to="/">
-              <img src="/images/NavLogo.webp" alt="Travelo Logo" />
+            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'white', fontWeight: '800', fontSize: '1.5rem', letterSpacing: '0.5px' }}>
+              <img 
+                src="/images/NavLogo.webp" 
+                alt="Travelo" 
+                style={{ maxHeight: '42px', width: 'auto', display: 'block' }} 
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  if (!e.target.parentNode.querySelector('.logo-text-fallback')) {
+                    e.target.insertAdjacentHTML('afterend', '<span class="logo-text-fallback" style="color: white; font-weight: 800; font-size: 1.5rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-paper-plane" style="margin-right: 4px;"></i>Travelo</span>');
+                  }
+                }} 
+              />
             </Link>
           </div>
 
-          {/* Mini Search Bar (Shows on Scroll) */}
-          {scrolled && (
+          {/* Mini Search Bar (Shows on Scroll - Only on Home Page) */}
+          {scrolled && isHomePage && (
             <div className="mini-search">
               <button className="mini-btn" onClick={() => handleSearchRedirect('destination')}>Where</button>
               <span className="divider"></span>
@@ -95,10 +106,7 @@ const Navbar = () => {
 
           {/* Nav Icons & User Menu */}
           <div className="nav-icons">
-            {/* Theme Toggle */}
-            <button className="theme-toggle" onClick={toggleDarkMode} title="Toggle Dark/Light Mode">
-              <i className={darkMode ? 'fas fa-sun' : 'fas fa-moon'}></i>
-            </button>
+            {/* Theme toggle has been moved to the Hamburger dropdown */}
 
             {/* Notifications (Only if Logged In) */}
             {user && (
@@ -149,6 +157,16 @@ const Navbar = () => {
                     <li><Link to="/contact" onClick={() => setShowMenu(false)}>Contact</Link></li>
                     <li><Link to="/faq" onClick={() => setShowMenu(false)}>FAQ</Link></li>
                     <li><Link to="/blog" onClick={() => setShowMenu(false)}>Blog</Link></li>
+                    <li>
+                      <button 
+                        type="button" 
+                        onClick={() => { toggleDarkMode(); setShowMenu(false); }}
+                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: '10px 20px', background: 'transparent', border: 'none', textAlign: 'left', color: 'var(--text-color)', fontSize: '14px' }}
+                      >
+                        <span>Dark Mode</span>
+                        <i className={darkMode ? 'fas fa-toggle-on' : 'fas fa-toggle-off'} style={{ color: 'var(--accent-color)', fontSize: '1.2rem' }}></i>
+                      </button>
+                    </li>
                     
                     {user ? (
                       <>
@@ -192,9 +210,42 @@ const Navbar = () => {
           <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
             <button className="close-modal-btn" onClick={() => setShowAuthModal(false)}>&times;</button>
             
-            <div className="signup-header">
-              <h3>{isLoginView ? 'Welcome Back' : 'Join Travelo'}</h3>
-              <p>{isLoginView ? 'Sign in to access your bookings' : 'Create an account to unlock deals'}</p>
+            {/* Tabs Header */}
+            <div style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', marginBottom: '24px' }}>
+              <button 
+                type="button"
+                onClick={() => { setIsLoginView(true); setAuthError(''); }}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: isLoginView ? '2.5px solid var(--accent-color)' : '2.5px solid transparent',
+                  fontWeight: 'bold',
+                  color: isLoginView ? 'var(--accent-color)' : 'var(--text-muted)',
+                  fontSize: '15px',
+                  transition: 'all 0.3s'
+                }}
+              >
+                Log In
+              </button>
+              <button 
+                type="button"
+                onClick={() => { setIsLoginView(false); setAuthError(''); }}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: !isLoginView ? '2.5px solid var(--accent-color)' : '2.5px solid transparent',
+                  fontWeight: 'bold',
+                  color: !isLoginView ? 'var(--accent-color)' : 'var(--text-muted)',
+                  fontSize: '15px',
+                  transition: 'all 0.3s'
+                }}
+              >
+                Sign Up
+              </button>
             </div>
 
             {authError && (
@@ -203,62 +254,103 @@ const Navbar = () => {
               </div>
             )}
 
-            <form onSubmit={handleAuthSubmit} className="signup-form" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {!isLoginView && (
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label>Full Name</label>
+                  <label style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '6px', display: 'block', color: 'var(--text-muted)' }}>FULL NAME</label>
                   <input 
                     type="text" 
                     placeholder="Enter your name" 
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required 
+                    style={{
+                      width: '100%',
+                      padding: '12px 16px',
+                      border: '1.5px solid var(--border-color)',
+                      borderRadius: '10px',
+                      background: 'var(--bg-color)',
+                      color: 'var(--text-color)',
+                      outline: 'none',
+                      fontSize: '14px',
+                      transition: 'border-color 0.2s'
+                    }}
                   />
                 </div>
               )}
 
               <div className="form-group" style={{ marginBottom: 0 }}>
-                <label>Email Address</label>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '6px', display: 'block', color: 'var(--text-muted)' }}>EMAIL ADDRESS</label>
                 <input 
                   type="email" 
                   placeholder="you@example.com" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required 
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    border: '1.5px solid var(--border-color)',
+                    borderRadius: '10px',
+                    background: 'var(--bg-color)',
+                    color: 'var(--text-color)',
+                    outline: 'none',
+                    fontSize: '14px',
+                    transition: 'border-color 0.2s'
+                  }}
                 />
               </div>
 
               <div className="form-group" style={{ marginBottom: 0 }}>
-                <label>Password</label>
+                <label style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '6px', display: 'block', color: 'var(--text-muted)' }}>PASSWORD</label>
                 <input 
                   type="password" 
                   placeholder="Enter password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required 
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    border: '1.5px solid var(--border-color)',
+                    borderRadius: '10px',
+                    background: 'var(--bg-color)',
+                    color: 'var(--text-color)',
+                    outline: 'none',
+                    fontSize: '14px',
+                    transition: 'border-color 0.2s'
+                  }}
                 />
               </div>
 
-              <button type="submit" className="signup-continue-btn" style={{ margin: '10px 0 0 0' }}>
-                {isLoginView ? 'Log In' : 'Sign Up'}
+              <button type="submit" className="book-btn" style={{ marginTop: '8px', padding: '14px' }}>
+                {isLoginView ? 'Sign In' : 'Create Account'}
               </button>
 
-              <div className="signup-or-separator" style={{ margin: '10px 0' }}><span>or</span></div>
+              <div className="signup-or-separator" style={{ margin: '8px 0' }}><span>or</span></div>
 
-              <button type="button" className="signup-social-btn signup-google" onClick={handleGoogleLogin}>
-                <i className="fab fa-google"></i> Continue with Google
+              <button 
+                type="button" 
+                className="signup-social-btn signup-google" 
+                onClick={handleGoogleLogin}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '10px',
+                  padding: '12px',
+                  borderRadius: '10px',
+                  border: '1.5px solid var(--border-color)',
+                  background: 'var(--card-bg)',
+                  color: 'var(--text-color)',
+                  fontWeight: '500',
+                  fontSize: '14px',
+                  transition: 'background 0.2s'
+                }}
+              >
+                <i className="fab fa-google" style={{ color: '#ea4335' }}></i> Continue with Google
               </button>
             </form>
-
-            <p style={{ fontSize: '13px', textAlign: 'center', marginTop: '15px', color: 'var(--text-muted)' }}>
-              {isLoginView ? "Don't have an account? " : 'Already have an account? '}
-              <button 
-                onClick={() => { setIsLoginView(!isLoginView); setAuthError(''); }}
-                style={{ background: 'transparent', border: 'none', color: 'var(--accent-color)', fontWeight: 'bold', textDecoration: 'underline' }}
-              >
-                {isLoginView ? 'Create Account' : 'Sign In'}
-              </button>
-            </p>
           </div>
         </div>
       )}

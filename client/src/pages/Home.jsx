@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,9 +9,25 @@ const Home = () => {
   
   // Guest Selector State
   const [showGuestDropdown, setShowGuestDropdown] = useState(false);
-  const [adults, setAdults] = useState(2);
+  const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const [pets, setPets] = useState(false);
+
+  // Field click handlers using HTML5 input Refs
+  const checkinInputRef = useRef(null);
+  const checkoutInputRef = useRef(null);
+
+  const handleCheckinFieldClick = () => {
+    if (checkinInputRef.current) {
+      checkinInputRef.current.showPicker();
+    }
+  };
+
+  const handleCheckoutFieldClick = () => {
+    if (checkoutInputRef.current) {
+      checkoutInputRef.current.showPicker();
+    }
+  };
 
   // Data State
   const [featuredProperties, setFeaturedProperties] = useState([]);
@@ -19,12 +35,12 @@ const Home = () => {
 
   // Carousel State
   const trendingDestinations = [
-    { name: 'Machu Picchu', text: 'Discover nature and ancient ruins above the clouds.', img: '/images/Machu Picchu.webp' },
-    { name: 'Mount Everest', text: 'Touch the sky in the heart of the Himalayas.', img: '/images/Mount Everest.webp' },
-    { name: 'Great Barrier Reef', text: 'Dive into vibrant coral reefs and marine magic.', img: '/images/Great Barrier Reef.webp' },
-    { name: 'Amazon', text: 'Immerse yourself in the lungs of our planet.', img: '/images/Amazon.webp' },
-    { name: 'Sahara', text: 'Endless dunes and ancient Berber tales await.', img: '/images/Sahara.webp' },
-    { name: 'Petra', text: 'Step into the rose-red city half as old as time.', img: '/images/Petra.webp' }
+    { name: 'Machu Picchu', text: 'Discover nature and ancient ruins above the clouds.', img: 'https://images.unsplash.com/photo-1587595431973-160d0d94adb1?auto=format&fit=crop&w=600&q=80' },
+    { name: 'Mount Everest', text: 'Touch the sky in the heart of the Himalayas.', img: 'https://images.unsplash.com/photo-1585016495481-91613a3ab1bc?auto=format&fit=crop&w=600&q=80' },
+    { name: 'Great Barrier Reef', text: 'Dive into vibrant coral reefs and marine magic.', img: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=600&q=80' },
+    { name: 'Amazon', text: 'Immerse yourself in the lungs of our planet.', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=600&q=80' },
+    { name: 'Sahara', text: 'Endless dunes and ancient Berber tales await.', img: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=600&q=80' },
+    { name: 'Petra', text: 'Step into the rose-red city half as old as time.', img: 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=600&q=80' }
   ];
 
   const [carouselIndex, setCarouselIndex] = useState(2); // Start centered
@@ -52,6 +68,11 @@ const Home = () => {
 
   const handleNatureClick = (category) => {
     navigate(`/search?type=${category}`);
+  };
+
+  const handleTrendingClick = (destinationName) => {
+    // If destinationName contains Mount Everest, let's search Everest trail. Directly query destinationName.
+    navigate(`/search?search=${encodeURIComponent(destinationName)}`);
   };
 
   // Carousel Logic
@@ -90,31 +111,35 @@ const Home = () => {
             </div>
 
             {/* Checkin Date */}
-            <div className="searchBar-field">
+            <div className="searchBar-field" onClick={handleCheckinFieldClick} style={{ cursor: 'pointer' }}>
               <i className="fas fa-calendar-alt"></i>
               <div className="field-content">
                 <label htmlFor="checkin-input">Check in</label>
                 <input
                   id="checkin-input"
+                  ref={checkinInputRef}
                   type="date"
                   min={new Date().toISOString().split('T')[0]}
                   value={checkin}
                   onChange={(e) => setCheckin(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
                 />
               </div>
             </div>
 
             {/* Checkout Date */}
-            <div className="searchBar-field">
+            <div className="searchBar-field" onClick={handleCheckoutFieldClick} style={{ cursor: 'pointer' }}>
               <i className="fas fa-calendar-alt"></i>
               <div className="field-content">
                 <label htmlFor="checkout-input">Check out</label>
                 <input
                   id="checkout-input"
+                  ref={checkoutInputRef}
                   type="date"
                   min={checkin || new Date().toISOString().split('T')[0]}
                   value={checkout}
                   onChange={(e) => setCheckout(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
                 />
               </div>
             </div>
@@ -198,7 +223,7 @@ const Home = () => {
         <div className="card-grid">
           <div className="destination-card" onClick={() => handleNatureClick('cabin')}>
             <div className="blur-overlay"></div>
-            <img src="/images/mountain.webp" alt="Mountains" />
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="Mountains" />
             <div className="destination-content">
               <h3>Mountains</h3>
               <p>Discover the majestic Himalayas, home to Mt. Everest and peaceful trekking routes.</p>
@@ -207,7 +232,7 @@ const Home = () => {
 
           <div className="destination-card" onClick={() => handleNatureClick('villa')}>
             <div className="blur-overlay"></div>
-            <img src="/images/beach.webp" alt="Beaches" />
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" alt="Beaches" />
             <div className="destination-content">
               <h3>Beaches</h3>
               <p>Relax on pristine sandy shores, feel the ocean breeze, and enjoy crystal-clear waters.</p>
@@ -216,7 +241,7 @@ const Home = () => {
 
           <div className="destination-card" onClick={() => handleNatureClick('cabin')}>
             <div className="blur-overlay"></div>
-            <img src="/images/forrest.webp" alt="Forests" />
+            <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80" alt="Forests" />
             <div className="destination-content">
               <h3>Forests</h3>
               <p>Wander through lush greenery, spot wildlife, and breathe in the scent of ancient woods.</p>
@@ -225,7 +250,7 @@ const Home = () => {
 
           <div className="destination-card" onClick={() => handleNatureClick('apartment')}>
             <div className="blur-overlay"></div>
-            <img src="/images/lake.webp" alt="Lakes" />
+            <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80" alt="Lakes" />
             <div className="destination-content">
               <h3>Lakes</h3>
               <p>Visit serene lakes like Phewa and Rara, surrounded by mountains and forests.</p>
@@ -250,7 +275,10 @@ const Home = () => {
                 <div
                   key={d.name}
                   className={`trending-card ${isFocused ? 'focused' : ''}`}
-                  onClick={() => setCarouselIndex(index)}
+                  onClick={() => {
+                    setCarouselIndex(index);
+                    handleTrendingClick(d.name);
+                  }}
                   style={{
                     cursor: 'pointer',
                     transition: 'all 0.4s ease'

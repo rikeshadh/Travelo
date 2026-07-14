@@ -177,6 +177,87 @@ const seedData = async (shouldExit = true) => {
           email: 'eleni@elysium.com'
         },
         availability: []
+      },
+      {
+        title: 'Kyoto Machiya Traditional House',
+        description: 'Immerse yourself in history inside this beautifully restored 100-year-old Machiya town house. Located in the heart of Gion, featuring tatami rooms, sliding shoji paper doors, and a serene inner garden.',
+        propertyType: 'apartment',
+        pricePerNight: 160,
+        location: {
+          address: 'Gion-machi Minamigawa 570',
+          city: 'Kyoto',
+          country: 'Japan',
+          lat: 35.0037,
+          lng: 135.7782
+        },
+        imageGallery: [
+          'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80',
+          'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?auto=format&fit=crop&w=600&q=80'
+        ],
+        amenities: ['Wifi', 'Kitchen', 'Heating', 'Air Conditioning', 'Garden'],
+        ratings: { average: 4.8, count: 1 },
+        host: {
+          name: 'Takashi Sato',
+          avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+          bio: 'Preserving traditional Kyoto heritage and culture.',
+          email: 'takashi@travelo.com'
+        },
+        availability: []
+      },
+      {
+        title: 'Safari Glamping Tent',
+        description: 'Experience the wild in style. Sleep under luxury canvas tents in the Maasai Mara safari trails. Enjoy bonfire dinners, daily safari drives, and breathtaking wildlife viewings right from your tent deck.',
+        propertyType: 'cabin',
+        pricePerNight: 280,
+        location: {
+          address: 'Maasai Mara National Reserve Safari Camp 3',
+          city: 'Maasai Mara',
+          country: 'Kenya',
+          lat: -1.5281,
+          lng: 35.1968
+        },
+        imageGallery: [
+          'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=600&q=80',
+          'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=600&q=80'
+        ],
+        amenities: ['Wifi', 'Breakfast', 'Hot Tub', 'Pool', 'Tour Guide'],
+        ratings: { average: 4.9, count: 1 },
+        host: {
+          name: 'Emmanuel Kiprop',
+          avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=150&q=80',
+          bio: 'Wildlife expert, born and raised in Maasai Mara.',
+          email: 'emmanuel@travelo.com'
+        },
+        availability: []
+      },
+      {
+        title: 'Parisian Chic Loft',
+        description: 'Stay in style in this bright and elegant loft in Le Marais. Featuring modern architecture, historical structural beams, a library, and close access to local cafes, boutiques, and art galleries.',
+        propertyType: 'hotel',
+        pricePerNight: 195,
+        location: {
+          address: 'Rue de Rivoli 88',
+          city: 'Paris',
+          country: 'France',
+          lat: 48.8566,
+          lng: 2.3522
+        },
+        imageGallery: [
+          'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1499955085172-a104c9463ece?auto=format&fit=crop&w=600&q=80',
+          'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80'
+        ],
+        amenities: ['Wifi', 'Kitchen', 'Air Conditioning', 'Heating', 'Breakfast'],
+        ratings: { average: 4.7, count: 1 },
+        host: {
+          name: 'Chantal Dubois',
+          avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
+          bio: 'Interior designer and art lover hosting in Gion and Paris.',
+          email: 'chantal@travelo.com'
+        },
+        availability: []
       }
     ];
 
